@@ -75,4 +75,8 @@ import Foundation
            overlay = newValue
         }
     }
+    
+    var topScreen: Screen? {
+        return screens.last
+    }
 }

@@ -63,4 +63,12 @@ import SwiftUI
         } while aStack != nil
         return nil
     }
+    
+    var topStack: Stack? {
+        var stack: Stack? = rootStack
+        while stack?.presentedStack != nil {
+            stack = stack?.presentedStack
+        }
+        return stack
+    }
 }

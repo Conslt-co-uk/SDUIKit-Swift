@@ -42,11 +42,15 @@ import Combine
 
     var name: String?
     var title: String?
+    var url: URL?
     var ignoreSafeArea: String?
+    var actions: [Action]?
     
     let nameExpression: StringExpression?
     let titleExpression: StringExpression
+    let urlExpression: StringExpression?
     let ignoreSafeAreaExpression: StringExpression?
+    let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
     
     var showAlert: Bool = false
     {
@@ -68,8 +72,10 @@ import Combine
         self.copyState = copyState
         let state = copyState ? state.copy() : state
         titleExpression = registrar.parseStringExpression(object: object["title"]!)!
+        urlExpression = registrar.parseStringExpression(object: object["url"])
         nameExpression = registrar.parseStringExpression(object: object["name"])
         ignoreSafeAreaExpression = registrar.parseStringExpression(object: object["ignoreSafeArea"])
+        actions = registrar.parseActions(object: object["actions"])
         super.init(object: object, state: state, registrar: registrar, stylesheet: stack.app!.stylesheet)
         self.components = ((object["components"] as? [JSONValue]) ?? []).compactMap {
             registrar.parseComponent(object: $0, screen: self)
@@ -78,8 +84,19 @@ import Combine
     
     override func updateVariables() {
         title = titleExpression.compute(state: state)
+        if let urlString = urlExpression?.compute(state: state), !urlString.isEmpty {
+            url = URL(string: urlString)
+        }
         name = nameExpression?.compute(state: state)
         ignoreSafeArea = ignoreSafeAreaExpression?.compute(state: state)
+        
+        if let url = url {
+            activity.title = title
+            activity.webpageURL = url
+            activity.isEligibleForSearch = true
+            activity.isEligibleForHandoff = true
+        }
+        
         super.updateVariables()
     }
     
@@ -111,6 +128,19 @@ import Combine
                 continuation.resume(returning: true)
             }
             alertViewModel = .init(title: "Alert", message: message, buttons: [cancelButton, okButton])
+        }
+    }
+    
+    func onAppear() {
+        // advertise url in NSUserActivity
+        if let url = url {
+            activity.becomeCurrent()
+        }
+    }
+    
+    func onDisappear() {
+        if let url = url {
+            activity.resignCurrent()
         }
     }
     

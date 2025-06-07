@@ -57,5 +57,9 @@ class TabStack: Stack, VisualProtocol {
         }
         return nil
     }
+    
+    override var topScreen: Screen? {
+        return currentTab.screens.last
+    }
 
 }

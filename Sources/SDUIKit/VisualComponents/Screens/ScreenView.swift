@@ -40,6 +40,12 @@ struct ScreenView<Content: View>: View {
                     }
             }
         }
+        .onAppear() {
+            screen.onAppear()
+        }
+        .onDisappear {
+            screen.onDisappear()
+        }
         .alert(
             screen.alertViewModel?.title ?? "",
             isPresented: $screen.showAlert,

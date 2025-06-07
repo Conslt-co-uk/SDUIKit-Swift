@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct RootView: View {
+public struct SDUIView: View {
     let root: Root
     
     public init(json: Any, callback: (([String: Any]) -> ())? = nil) {
