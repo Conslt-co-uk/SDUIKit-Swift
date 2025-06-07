@@ -27,7 +27,11 @@ struct DateFieldView: View {
                            selection: dateField.state.dateBinding(name: dateField.variable!) ?? Date(),
                            in: range,
                            displayedComponents: .date)
+                #if os(macOS)
+                .datePickerStyle(.graphical)
+                #else
                 .datePickerStyle(.wheel)
+                #endif
                 .styledText(dateField.style)
             case "calendar":
                 DatePicker("",

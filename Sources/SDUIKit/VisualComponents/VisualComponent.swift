@@ -48,9 +48,13 @@ import Combine
     }
     
     func updateFontSizeMultiplier() {
+        #if os(macOS)
+        currentFontSizeMultiplier = 1
+        #else
         let baseFont = UIFont.systemFont(ofSize: 17)
         let scaledFont = UIFontMetrics.default.scaledFont(for: baseFont)
         currentFontSizeMultiplier = scaledFont.pointSize / baseFont.pointSize
+        #endif
     }
     
     func updateVariables() {

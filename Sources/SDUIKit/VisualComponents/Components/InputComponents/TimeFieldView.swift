@@ -27,7 +27,11 @@ struct TimeFieldView: View {
                            selection: timeField.state.timeBinding(name: timeField.variable!) ?? Date(),
                            in: range,
                            displayedComponents: .hourAndMinute)
+                #if os(macOS)
+                .datePickerStyle(.graphical)
+                #else
                 .datePickerStyle(.wheel)
+                #endif
                 .styledText(timeField.style)
             case "calendar":
                 DatePicker("",

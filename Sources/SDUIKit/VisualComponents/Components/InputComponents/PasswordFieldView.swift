@@ -53,9 +53,11 @@ struct PasswordFieldView: View {
             }
 
         }
+        #if os(iOS)
             .textInputAutocapitalization(.never)
-            .autocorrectionDisabled()
             .textContentType(.password)
+        #endif
+            .autocorrectionDisabled()
             .styledInput(inputComponent: passwordField)
         }
 }
