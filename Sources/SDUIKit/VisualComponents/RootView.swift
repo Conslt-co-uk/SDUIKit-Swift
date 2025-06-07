@@ -10,8 +10,8 @@ import SwiftUI
 public struct RootView: View {
     let root: Root
     
-    public init(root: Root) {
-        self.root = root
+    public init(json: Any, callback: (([String: Any]) -> ())? = nil) {
+        self.root = Root(json: json as! JSONObject, callback: callback)
     }
     
     public var body: some View {

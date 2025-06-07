@@ -33,7 +33,9 @@ import UIKit
 class OS {
     
     static func copyToPasteboard(_ text: String?) {
+        #if !os(tvOS)
         UIPasteboard.general.string = text
+        #endif
     }
     
 

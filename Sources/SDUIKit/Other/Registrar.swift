@@ -55,6 +55,7 @@ public class Registrar {
         actionTypes["replaceScreen"] = ReplaceScreen.self
         actionTypes["replaceApp"] = ReplaceApp.self
         actionTypes["validateScreen"] = ValidateScreen.self
+        actionTypes["callback"] = Callback.self
         
         booleanExpressionTypes["constant"] = BooleanConstant.self
         booleanExpressionTypes["variable"] = BooleanVariable.self
@@ -80,6 +81,7 @@ public class Registrar {
         booleanExpressionTypes[">="] = Compare.self
         booleanExpressionTypes["greaterOrEqual"] = Compare.self
         booleanExpressionTypes["regex"] = Regex.self
+        booleanExpressionTypes["isNull"] = IsNull.self
         numberExpressionTypes["constant"] = NumberConstant.self
         numberExpressionTypes["variable"] = NumberVariable.self
         numberExpressionTypes["default"] = NumberDefault.self
@@ -96,6 +98,7 @@ public class Registrar {
         numberExpressionTypes["min"] = NumberCompute.self
         numberExpressionTypes["max"] = NumberCompute.self
         numberExpressionTypes["round"] = Round.self
+        numberExpressionTypes["length"] = Length.self
         stringExpressionTypes["constant"] = StringConstant.self
         stringExpressionTypes["variable"] = StringVariable.self
         stringExpressionTypes["default"] = StringDefault.self

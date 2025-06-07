@@ -17,7 +17,9 @@ struct TabView: View {
         .tabItem {
             Label(tab.title, systemImage: "list.dash")
         }
+        #if !os(tvOS)
         .badge(tab.badge ?? 0)
+        #endif
         .tag(tab.name)
     }
 }
