@@ -23,6 +23,7 @@ import Foundation
     }
     
     func run(screen: Screen) async throws(ActionError) {
+        guard let session = screen.stack?.app?.root?.urlSession else { return }
         screen.stack?.showOverlay(true)
         defer { screen.stack?.showOverlay(false) }
         let method = methodExpression?.compute(state: screen.state)
@@ -60,13 +61,13 @@ import Foundation
         }
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await session.data(for: request)
             let  statusCode = (response as! HTTPURLResponse).statusCode
             guard statusCode == 200 || statusCode == 201  else {
                 throw ActionError(title: errorTitle, message: HTTPURLResponse.localizedString(forStatusCode: statusCode))
             }
             let json = try JSONDecoder().decode(AnyDecodable.self, from: data).value
-            if let actions = registrar.parseActions(object: json) {
+            if let actions = registrar.parseActions(object: (json as? JSONObject)?["actions"]) {
                 for action in actions {
                     try await action.run(screen: screen)
                 }

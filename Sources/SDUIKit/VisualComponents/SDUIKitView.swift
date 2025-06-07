@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-public struct SDUIView: View {
-    let root: Root
+public struct SDUIKitView: View {
+    @SwiftUI.State var root: Root
     
     public init(json: Any, callback: (([String: Any]) -> ())? = nil) {
         self.root = Root(json: json as! JSONObject, callback: callback)
@@ -16,5 +16,8 @@ public struct SDUIView: View {
     
     public var body: some View {
         AnyView(erasing: (root.app as! VisualProtocol).view())
+            .onOpenURL { [weak root] url in
+                root?.openDeepLink(url: url)
+            }
     }
 }

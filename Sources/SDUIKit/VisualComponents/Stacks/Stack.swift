@@ -2,7 +2,7 @@
 import SwiftUI
 import Foundation
 
-@MainActor @Observable public class Stack: VisualComponent {
+@Observable @MainActor public class Stack: VisualComponent {
     
     weak var app: App?
     var presentedStack: Stack?
@@ -21,13 +21,9 @@ import Foundation
     }
     
     var screens: [Screen] = [] {
-
         didSet {
             let nbRootScreens =  (self is SplitStack) ? 2 : 1
-
-            print("didSet screens: screens\(screens.count) path \(path.count)")
             path = screens.indices.map(\.self).dropFirst(nbRootScreens).map(\.self)
-
         }
     }
     
@@ -45,16 +41,19 @@ import Foundation
     }
     
     func push(screen: Screen) {
+        print("push")
         screens.append(screen)
     }
     
     func back() {
+        print("back")
         if screens.count > 1 {
             screens.removeLast()
         }
     }
     
     func replaceScreen(screenObject: JSONObject, registrar: Registrar) {
+        print("replace screen")
         screens = screens.map { aScreen in
             if let aName = aScreen.name, aName == screenObject["name"] as? String {
                 return registrar.parseScreen(object: screenObject, stack: self, state: aScreen.state)!
