@@ -46,6 +46,8 @@ import Combine
     var ignoreSafeArea: String?
     var actions: [Action]?
     
+    var leftButtons: [Button]?
+    var rightButtons: [Button]?
     let nameExpression: StringExpression?
     let titleExpression: StringExpression
     let urlExpression: StringExpression?
@@ -77,6 +79,8 @@ import Combine
         ignoreSafeAreaExpression = registrar.parseStringExpression(object: object["ignoreSafeArea"])
         actions = registrar.parseActions(object: object["actions"])
         super.init(object: object, state: state, registrar: registrar, stylesheet: stack.app!.stylesheet)
+        leftButtons = registrar.parseComponents(object: object["leftButtons"], screen: self)?.filter { $0 is Button} as? [Button]
+        rightButtons = registrar.parseComponents(object: object["rightButtons"], screen: self)?.filter { $0 is Button} as? [Button]
         self.components = ((object["components"] as? [JSONValue]) ?? []).compactMap {
             registrar.parseComponent(object: $0, screen: self)
         }
@@ -132,16 +136,11 @@ import Combine
     }
     
     func onAppear() {
-        // advertise url in NSUserActivity
-        if let url = url {
-            activity.becomeCurrent()
-        }
+        if url != nil { activity.becomeCurrent() }
     }
     
     func onDisappear() {
-        if let url = url {
-            activity.resignCurrent()
-        }
+        if url != nil { activity.resignCurrent() }
     }
     
 }

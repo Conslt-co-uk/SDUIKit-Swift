@@ -40,6 +40,62 @@ struct ScreenView<Content: View>: View {
                     }
             }
         }
+        .toolbar {
+            if screen.leftButtons?.count ?? 0 > 0 {
+                let button = screen.leftButtons![0]
+                ToolbarItem(placement: .navigationBarLeading) {
+                    SwiftUI.Button {
+                        button.run()
+                    } label: {
+                        if let image = button.image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                        } else {
+                            Text(button.title ??  "")
+                        }
+                    }
+                    .frame(width: button.style.width ?? 38, height: button.style.height ?? 38)
+                }
+            }
+            if screen.leftButtons?.count ?? 0 > 1 {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    VisualComponentView(screen.leftButtons![1])
+                }
+            }
+            if screen.leftButtons?.count ?? 0 > 2 {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    VisualComponentView(screen.leftButtons![2])
+                }
+            }
+            if screen.rightButtons?.count ?? 0 > 0 {
+                let button = screen.rightButtons![0]
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    SwiftUI.Button {
+                        button.run()
+                    } label: {
+                        if let image = button.image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                        } else {
+                            Text(button.title ??  "")
+                        }
+                    }
+                    .frame(width: button.style.width ?? 38, height: button.style.height ?? 38)
+                }
+            }
+            if screen.rightButtons?.count ?? 0 > 1 {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    VisualComponentView(screen.rightButtons![1])
+                }
+            }
+            if screen.rightButtons?.count ?? 0 > 2 {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    VisualComponentView(screen.rightButtons![2])
+                }
+            }
+        }
         .onAppear() {
             screen.onAppear()
         }

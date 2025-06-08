@@ -13,12 +13,19 @@ struct ButtonView: View {
         SwiftUI.Button {
             viewModel.run()
         } label: {
-            Text(viewModel.title ?? "")
-                
+            if let image = viewModel.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+            }
+            if let title = viewModel.title {
+                Text(title)
+            }  
         }
         .buttonStyle(SDUIButtonStyle(style: viewModel.style, pressedStyle: viewModel.pressedStyle))
         .disabled(!(viewModel.enabled ?? true))
         .opacity((viewModel.enabled ?? true) ? 1 : 0.2)
+        .frame(width: CGFloat(viewModel.style.width), height: CGFloat(viewModel.style.height))
         .styledMargin(viewModel.style)
         
     }
