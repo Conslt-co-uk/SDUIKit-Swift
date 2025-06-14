@@ -9,10 +9,10 @@ import SwiftUI
     private let titleExpression: StringExpression?
     private let progressExpression: NumberExpression
     
-    required init(object: JSONObject, screen: Screen, registrar: Registrar) {
+    required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         titleExpression = registrar.parseStringExpression(object: object["title"])
         progressExpression = registrar.parseNumberExpression(object: object["progress"])!
-        super.init(object: object, screen: screen, registrar: registrar)
+        super.init(object: object, screen: screen, registrar: registrar, typeName: typeName ?? "progress")
     }
     
     override func updateVariables() {

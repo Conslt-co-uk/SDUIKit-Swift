@@ -14,12 +14,9 @@ import Combine
     
     var cancellables = Set<AnyCancellable>()
     
-    static let typeName: String = "visual"
-    
-    init(object: JSONObject, state: State, registrar: Registrar, stylesheet: Stylesheet) {
+    init(object: JSONObject, state: State, registrar: Registrar, stylesheet: Stylesheet, typeName: String? = nil) {
         self.state = state
-        self.styleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: stylesheet, styleName: object["style"] as? String ?? Self.typeName)
-        
+        self.styleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: stylesheet, styleName: object["style"] as? String ?? typeName ?? "visualComponent")
         state.$booleans
             .dropFirst()
             .sink { _ in

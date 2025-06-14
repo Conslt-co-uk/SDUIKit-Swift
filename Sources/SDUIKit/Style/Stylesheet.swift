@@ -11,11 +11,46 @@ struct Stylesheet {
         colors = object?["colors"] as? [String: String] ?? [:]
     }
     
-    func compactedStyle(name: String) -> Style? {
-        var currentStyle = styles[name]
-        while let parentName = currentStyle?.style, let parentStyle = styles[parentName] {
-            currentStyle = currentStyle?.add(style: parentStyle)
+    func color(name: String?) -> String? {
+        guard let name else { return nil }
+        if name.hasPrefix("#") {
+            return name
+        } else {
+            return colors[name] ?? name
         }
-        return currentStyle
+    }
+    
+    func compactedStyle(name: String) -> Style? {
+        if name == "link" {
+            print("break")
+        }
+        guard var currentStyle = styles[name] else { return nil }
+        while let parentName = currentStyle.style, let parentStyle = styles[parentName] {
+            currentStyle = currentStyle.add(style: parentStyle)
+        }
+        return Style(style: currentStyle.style,
+                             variant: currentStyle.variant,
+                             visibility: currentStyle.visibility,
+                             privacy: currentStyle.privacy,
+                             alignment: currentStyle.alignment,
+                             bold: currentStyle.bold,
+                             italic: currentStyle.italic,
+                             underlined: currentStyle.underlined,
+                             color: color(name: currentStyle.color),
+                             size: currentStyle.size,
+                             font: currentStyle.font,
+                             innerMargin: currentStyle.innerMargin,
+                             margin: currentStyle.margin,
+                             titleWidth: currentStyle.titleWidth,
+                             spaceBefore: currentStyle.spaceBefore,
+                             spaceAfter: currentStyle.spaceAfter,
+                             maxWidth: currentStyle.maxWidth,
+                             borderRadius: currentStyle.borderRadius,
+                             backgroundColor: color(name: currentStyle.backgroundColor),
+                             borderColor: color(name: currentStyle.borderColor),
+                             borderWidth: currentStyle.borderWidth,
+                             height: currentStyle.height,
+                             width: currentStyle.width,
+                             shadow: currentStyle.shadow)
     }
 }

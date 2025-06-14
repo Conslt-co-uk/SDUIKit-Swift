@@ -7,8 +7,6 @@ struct StackView<Content: View>: View {
     
     var body: some View {
         content
-        .styled(stack.style)
-        .styledMargin(stack.style)
         .sheet(item: $stack.presentedStack) { aStack in
             VisualComponentView(aStack)
         }

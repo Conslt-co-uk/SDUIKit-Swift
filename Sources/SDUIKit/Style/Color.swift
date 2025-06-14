@@ -31,9 +31,9 @@ extension Color {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         if hex.contains("/") {
             if darkMode {
-                self = Color(hex: String(hex.split(separator: "-").last ?? ""))
+                self = Color(hex: String(hex.split(separator: "/").last ?? ""))
             } else {
-                self = Color(hex: String(hex.split(separator: "-").first ?? ""))
+                self = Color(hex: String(hex.split(separator: "/").first ?? ""))
             }
         } else {
             self = Color(hex: hex)

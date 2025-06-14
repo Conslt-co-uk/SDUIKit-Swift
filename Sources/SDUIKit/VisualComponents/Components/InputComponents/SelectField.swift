@@ -17,9 +17,9 @@ import Foundation
     
     let values: [SelectValue]
     
-    required init(object: JSONObject, screen: Screen, registrar: Registrar) {
+    required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         values = (object["values"] as! [JSONObject]).map{ SelectValue(object: $0) }
-        super.init(object: object, screen: screen, registrar: registrar)
+        super.init(object: object, screen: screen, registrar: registrar, typeName: typeName ?? "selectField")
     }
     
     @ViewBuilder

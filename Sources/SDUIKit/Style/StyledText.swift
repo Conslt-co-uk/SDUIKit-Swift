@@ -47,6 +47,7 @@ extension Text {
             .font(style.font != nil ? .custom(style.font!, size: style.size ?? 17) : .system(size: (style.size ?? 17) * dynamicTypeSize.multiplier))
             .bold(style.bold ?? false)
             .italic(style.italic ?? false)
+            .underline(style.underlined ?? false)
             .foregroundColor(Color(sduiName: style.color, darkMode: darkMode, default: .primary))
     }
 }

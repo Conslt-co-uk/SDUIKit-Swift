@@ -8,10 +8,10 @@ import SwiftUI
     
     let alignmentExpression: StringExpression
     
-    required init(object: JSONObject, screen: Screen, registrar: Registrar) {
+    required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         spans = registrar.ParseSpans(object: object["spans"], screen: screen) ?? []
         alignmentExpression = registrar.parseStringExpression(object: object["alignment"] ?? "left")!
-        super.init(object: object, screen: screen, registrar: registrar)
+        super.init(object: object, screen: screen, registrar: registrar, typeName: "paragraph")
     }
     
     override func updateVariables() {

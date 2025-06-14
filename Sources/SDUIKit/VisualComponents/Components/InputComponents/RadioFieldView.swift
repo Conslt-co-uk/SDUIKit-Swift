@@ -25,16 +25,19 @@ struct TickView: View {
                 .padding(.vertical, 6)
                 .foregroundColor(ticked ? .primary : .clear)
         }
+        .contentShape(Rectangle())
         .background {
             if isPressed {
                 Color.gray.opacity(0.2)
+                    .padding(.horizontal, -(style.margin ?? 0))
+            } else {
+                EmptyView()
             }
         }
-        .contentShape(Rectangle())
         .gesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { _ in
-                    isPressed = false
+                    isPressed = true
                     
                 }
                 .onEnded { _ in
@@ -53,13 +56,14 @@ struct RadioFieldView: View {
     
     var radioField: RadioField
     @ObservedObject var state: State
+    @SwiftUI.State var isPressed = false
     
     init(radioField: RadioField) {
         self.radioField = radioField
         self.state = radioField.state
     }
     
-    var body: some View {
+    var main: some View {
         VStack(spacing: 0) {
             ForEach(radioField.values) { aSelectValue in
                 let ticked = aSelectValue.value == state.stringValue(name: radioField.variable)
@@ -71,5 +75,31 @@ struct RadioFieldView: View {
         .pickerStyle(.palette)
         .frame(maxWidth: .infinity)
         .styledInput(inputComponent: radioField, verticalShrink: 3.5)
+    }
+    
+    var body: some View {
+        if radioField.values.count == 1, let firstValue = radioField.values.first {
+            main
+                .contentShape(Rectangle())
+                .gesture(
+                    DragGesture(minimumDistance: 0)
+                        .onChanged { _ in
+                            isPressed = true
+                        }
+                        .onEnded { _ in
+                            isPressed = false
+                            state.strings[radioField.variable ?? ""] = firstValue.value
+                        }
+                )
+                .background {
+                    if isPressed {
+                        Color.gray.opacity(0.2)
+                    } else {
+                        EmptyView()
+                    }
+                }
+        } else {
+            main
+        }
     }
 }

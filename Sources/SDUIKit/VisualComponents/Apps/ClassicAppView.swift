@@ -11,11 +11,19 @@ struct ClassicAppView: View {
     
     let app: App
     
+    @Environment(\.colorScheme) private var colorScheme
+    
     init(app: App) {
         self.app = app
     }
     
     var body: some View {
-        VisualComponentView(app.rootStack)
+        if let accent = app.stylesheet.colors["accent"] {
+            VisualComponentView(app.rootStack)
+                .accentColor(Color(hex: accent, darkMode: colorScheme == .dark))
+        } else {
+            VisualComponentView(app.rootStack)
+        }
+        
     }
 }

@@ -7,9 +7,9 @@ import SwiftUI
     
     private let imageExpression: StringExpression
     
-    required init(object: JSONObject, screen: Screen, registrar: Registrar) {
+    required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         imageExpression = registrar.parseStringExpression(object: object["image"] ?? 0)!
-        super.init(object: object, screen: screen, registrar: registrar)
+        super.init(object: object, screen: screen, registrar: registrar, typeName: typeName ?? "image")
     }
     
     override func updateVariables() {

@@ -7,9 +7,9 @@ import SwiftUI
     
     let responsiveWidthExpression: NumberExpression?
     
-    required init(object: JSONObject, screen: Screen, registrar: Registrar) {
+    required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         responsiveWidthExpression = registrar.parseNumberExpression(object: object["responsiveWidth"])
-        super.init(object: object, screen: screen, registrar: registrar)
+        super.init(object: object, screen: screen, registrar: registrar, typeName: typeName)
     }
     
     override func updateVariables() {
@@ -20,7 +20,7 @@ import SwiftUI
     @ViewBuilder
     func view() -> any View
     {
-        ResponsiveView(card: self)
+        ResponsiveView(responsive: self)
     }
 }
 

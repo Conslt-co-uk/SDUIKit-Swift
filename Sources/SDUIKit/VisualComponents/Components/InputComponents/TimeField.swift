@@ -12,11 +12,11 @@ import Foundation
     private let maxExpression: StringExpression?
     private let pickerExpression: StringExpression?
     
-    required init(object: JSONObject, screen: Screen, registrar: Registrar) {
+    required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         minExpression = registrar.parseStringExpression(object: object["min"])
         maxExpression = registrar.parseStringExpression(object: object["max"])
         pickerExpression = registrar.parseStringExpression(object: object["picker"])
-        super.init(object: object, screen: screen, registrar: registrar)
+        super.init(object: object, screen: screen, registrar: registrar, typeName: typeName ?? "timeField")
     }
 
     override func updateVariables() {

@@ -34,6 +34,8 @@ struct ParagraphView: View {
     }
     
     var body: some View {
+        
+        
         paragraph.spans.reduce(Text("")) { partialResult, span in
             if span.actions != nil {
                 let index = paragraph.spans.firstIndex { $0 === span }!

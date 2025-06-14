@@ -27,6 +27,7 @@ struct SwitchFieldView: View {
                     Toggle("", isOn: state.booleanBinding(name: aSelectValue.variable) ?? false)
                         .labelsHidden()
                         .padding(.vertical, 3)
+                        .padding(.horizontal, 5)
                 }
             }
         }

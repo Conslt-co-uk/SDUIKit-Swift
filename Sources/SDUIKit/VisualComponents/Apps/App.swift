@@ -9,7 +9,7 @@ import SwiftUI
     
     required init(object: JSONObject, registrar: Registrar) {
         let state = State(object: object["state"] as? JSONObject)
-        let stylesheet = Stylesheet(object: object["stylesheet"] as? JSONObject)
+        let stylesheet = Stylesheet(object: object)
         self.stylesheet = stylesheet
         super.init(object: object, state: state, registrar: registrar, stylesheet: stylesheet)
         var stacks = ((object["stacks"] as? [JSONValue]) ?? []).compactMap {

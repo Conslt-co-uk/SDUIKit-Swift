@@ -8,6 +8,8 @@ struct InputComponentViewModifier: ViewModifier {
     let errorStyle: Style
     let titleStyle: Style
     let verticalShrink: Double
+    @Environment(\.colorScheme) private var colorScheme
+    
     
     func body(content: Content) -> some View {
         Group {
@@ -49,7 +51,14 @@ struct InputComponentViewModifier: ViewModifier {
                         .styled(titleStyle)
                     }
                     content
-                        .padding(.bottom, style.innerMargin ?? 0)
+                    HStack(spacing: 0) {
+                        Text(errorMessage)
+                            .multilineTextAlignment(.leading)
+                            .styledText(errorStyle)
+                        Spacer()
+                    }
+                    .styledMargin(errorStyle)
+                    .styled(errorStyle)
                 }
                 .styled(style)
             case "underlined":
@@ -66,23 +75,49 @@ struct InputComponentViewModifier: ViewModifier {
                         
                     }
                     content
+                        .padding(style.innerMargin ?? 0)
+                        .background {
+                            BackgroundView(string: style.backgroundColor)
+                        }
                     SwiftUI.Divider()
-                        .styled(style)
+                        .frame(height: style.borderWidth ?? 1)
+                        .background(Color(sduiName: style.borderColor, darkMode: colorScheme == .dark))
+                    HStack(spacing: 0) {
+                        Text(errorMessage)
+                            .multilineTextAlignment(.leading)
+                            .styledText(errorStyle)
+                        Spacer()
+                    }
+                    .styledMargin(errorStyle)
+                    .styled(errorStyle)
                 }
             default:
-                HStack {
-                    if let title {
-                        HStack {
-                            Text(title)
+                VStack(spacing: 0) {
+                    HStack {
+                        if let title, !title.isEmpty {
+                            HStack {
+                                Text(title)
+                                    .multilineTextAlignment(.leading)
+                                    .styledText(titleStyle)
+                                Spacer()
+                            }
+                            .styledMargin(titleStyle)
+                            .styled(titleStyle)
+                            
+                        }
+                        content
+                    }
+                    .padding(.vertical, style.innerMargin ?? 0)
+                    if errorMessage != "\u{00A0}" {
+                        HStack(spacing: 0) {
+                            Text(errorMessage)
                                 .multilineTextAlignment(.leading)
-                                .styledText(titleStyle)
+                                .styledText(errorStyle)
                             Spacer()
                         }
-                        .styledMargin(titleStyle)
-                        .styled(titleStyle)
-                        
+                        .styledMargin(errorStyle)
+                        .styled(errorStyle)
                     }
-                    content
                 }
                 .styled(style)
             }

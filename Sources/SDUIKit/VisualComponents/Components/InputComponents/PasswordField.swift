@@ -10,11 +10,11 @@ import Foundation
     let contentExpression: StringExpression?
     
     
-    required init(object: JSONObject, screen: Screen, registrar: Registrar) {
+    required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         placeholderExpression = registrar.parseStringExpression(object: object["placeholder"])
         contentExpression = registrar.parseStringExpression(object: object["content"])
         
-        super.init(object: object, screen: screen, registrar: registrar)
+        super.init(object: object, screen: screen, registrar: registrar, typeName: typeName ?? "passwordField")
     }
 
     override func updateVariables() {

@@ -18,8 +18,10 @@ struct SelectFieldView: View {
     }
     
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             Spacer()
+            Text("\u{00A0}")
+                .padding(.vertical, 7)
             Picker(selectField.title ?? "", selection: selectField.state.stringBinding(name: selectField.variable!)) {
                 ForEach(selectField.values) { aSelectValue in
                     Text(aSelectValue.title)

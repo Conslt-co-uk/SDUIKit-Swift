@@ -45,6 +45,7 @@ import Combine
     var url: URL?
     var ignoreSafeArea: String?
     var actions: [Action]?
+    var largeTitle = false
     
     var leftButtons: [Button]?
     var rightButtons: [Button]?
@@ -53,6 +54,7 @@ import Combine
     let urlExpression: StringExpression?
     let ignoreSafeAreaExpression: StringExpression?
     let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
+    let largeTitleExpression: BooleanExpression?
     
     var showAlert: Bool = false
     {
@@ -68,7 +70,7 @@ import Combine
         }
     }
     
-    required init(object: JSONObject, stack: Stack, state: State, registrar: Registrar) {
+    required init(object: JSONObject, stack: Stack, state: State, registrar: Registrar, typeName: String? = nil) {
         self.stack = stack
         let copyState = object["copyState"] as? Bool ?? false
         self.copyState = copyState
@@ -76,9 +78,10 @@ import Combine
         titleExpression = registrar.parseStringExpression(object: object["title"]!)!
         urlExpression = registrar.parseStringExpression(object: object["url"])
         nameExpression = registrar.parseStringExpression(object: object["name"])
+        largeTitleExpression = registrar.parseBooleanExpression(object: object["largeTitle"])
         ignoreSafeAreaExpression = registrar.parseStringExpression(object: object["ignoreSafeArea"])
         actions = registrar.parseActions(object: object["actions"])
-        super.init(object: object, state: state, registrar: registrar, stylesheet: stack.app!.stylesheet)
+        super.init(object: object, state: state, registrar: registrar, stylesheet: stack.app!.stylesheet, typeName: typeName)
         leftButtons = registrar.parseComponents(object: object["leftButtons"], screen: self)?.filter { $0 is Button} as? [Button]
         rightButtons = registrar.parseComponents(object: object["rightButtons"], screen: self)?.filter { $0 is Button} as? [Button]
         self.components = ((object["components"] as? [JSONValue]) ?? []).compactMap {
@@ -92,7 +95,8 @@ import Combine
             url = URL(string: urlString)
         }
         name = nameExpression?.compute(state: state)
-        ignoreSafeArea = ignoreSafeAreaExpression?.compute(state: state)
+        ignoreSafeArea = ignoreSafeAreaExpression?.compute(state: state) ?? "all"
+        largeTitle = largeTitleExpression?.compute(state: state) ?? false
         
         if let url = url {
             activity.title = title

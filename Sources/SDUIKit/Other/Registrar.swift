@@ -19,10 +19,18 @@ public class Registrar {
     
     public init() {
         appTypes["classic"] = ClassicApp.self
+        
         stackTypes["navigation"] = Navigation.self
         stackTypes["tab"] = TabStack.self
         stackTypes["split"] = SplitStack.self
+        
         screenTypes["form"] = Form.self
+        
+        componentTypes["card"] = Card.self
+        componentTypes["combo"] = Combo.self
+        componentTypes["flow"] = Flow.self
+        componentTypes["responsive"] = Responsive.self
+        componentTypes["carousel"] = Carousel.self
         componentTypes["paragraph"] = Paragraph.self
         componentTypes["textField"] = SDUITextField.self
         componentTypes["passwordField"] = PasswordField.self
@@ -32,10 +40,10 @@ public class Registrar {
         componentTypes["switch"] = SwitchField.self
         componentTypes["radioField"] = RadioField.self
         componentTypes["button"] = Button.self
-        componentTypes["card"] = Card.self
         componentTypes["divider"] = Divider.self
         componentTypes["progress"] = Progress.self
         componentTypes["image"] = SDUIImage.self
+        
         actionTypes["alert"] = Alert.self
         actionTypes["confirm"] = Confirm.self
         actionTypes["if"] = IfAction.self
@@ -82,6 +90,7 @@ public class Registrar {
         booleanExpressionTypes["greaterOrEqual"] = Compare.self
         booleanExpressionTypes["regex"] = Regex.self
         booleanExpressionTypes["isNull"] = IsNull.self
+        
         numberExpressionTypes["constant"] = NumberConstant.self
         numberExpressionTypes["variable"] = NumberVariable.self
         numberExpressionTypes["default"] = NumberDefault.self
@@ -99,6 +108,7 @@ public class Registrar {
         numberExpressionTypes["max"] = NumberCompute.self
         numberExpressionTypes["round"] = Round.self
         numberExpressionTypes["length"] = Length.self
+        
         stringExpressionTypes["constant"] = StringConstant.self
         stringExpressionTypes["variable"] = StringVariable.self
         stringExpressionTypes["default"] = StringDefault.self
@@ -209,6 +219,7 @@ public class Registrar {
     }
     
     func parseNumberExpression(object: JSONValue?) -> NumberExpression? {
+        guard let object else { return nil }
         if let constant = object as? Int {
             return NumberConstant(constant: Double(constant))
         }

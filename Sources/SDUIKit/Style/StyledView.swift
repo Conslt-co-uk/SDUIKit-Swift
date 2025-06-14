@@ -12,11 +12,13 @@ struct StyledModifier: ViewModifier {
                 RoundedRectangle(cornerRadius: style.borderRadius ?? 0)
                     .stroke(lineWidth: style.borderWidth ?? 1)
                     .foregroundColor(Color(sduiName: style.borderColor, darkMode: darkMode))
+                    .padding((style.borderWidth ?? 1) / 2)
             }
             .background {
-                RoundedRectangle(cornerRadius: style.borderRadius ?? 0)
-                    .fill(Color(sduiName: style.backgroundColor, darkMode: darkMode))
+                BackgroundView(string: style.backgroundColor)
+                    .clipShape(RoundedRectangle(cornerRadius: style.borderRadius ?? 0))
             }
+            .clipShape(RoundedRectangle(cornerRadius: style.borderRadius ?? 0))
     }
 }
 

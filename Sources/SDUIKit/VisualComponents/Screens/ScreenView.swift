@@ -22,22 +22,25 @@ struct ScreenView<Content: View>: View {
     
     var body: some View {
         let darkMode = colorScheme == .dark
-        Group {
+        ZStack {
+            Color(sduiName: screen.style.backgroundColor, darkMode: darkMode)
+                .ignoresSafeArea(edges: edges)
             if let title = screen.title {
                 content
                     .styledMargin(screen.style)
-                    .background {
-                        Color(sduiName: screen.style.backgroundColor, darkMode: darkMode)
-                            .ignoresSafeArea(edges: edges)
-                    }
+//                    .background {
+//                        Color(sduiName: screen.style.backgroundColor, darkMode: darkMode)
+//                            .ignoresSafeArea(edges: edges)
+//                    }
                     .navigationTitle(Text(title))
+                    .navigationBarTitleDisplayMode(screen.largeTitle ? .large : .inline)
             } else {
                 content
                     .styledMargin(screen.style)
-                    .background {
-                        Color(sduiName: screen.style.backgroundColor, darkMode: darkMode)
-                            .ignoresSafeArea(edges: edges)
-                    }
+//                    .background {
+//                        Color(sduiName: screen.style.backgroundColor, darkMode: darkMode)
+//                            .ignoresSafeArea(edges: edges)
+//                    }
             }
         }
         .toolbar {

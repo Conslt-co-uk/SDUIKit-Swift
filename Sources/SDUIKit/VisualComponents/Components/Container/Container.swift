@@ -5,9 +5,9 @@ import SwiftUI
     
     public var components: [Component]
     
-    required init(object: JSONObject, screen: Screen, registrar: Registrar) {
+    required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         self.components = registrar.parseComponents(object: object["components"], screen: screen)!
-        super.init(object: object, screen: screen, registrar: registrar)
+        super.init(object: object, screen: screen, registrar: registrar, typeName: typeName)
     }
     
 }

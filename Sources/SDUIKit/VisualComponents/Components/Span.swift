@@ -7,13 +7,20 @@ import Foundation
     private let textExpression: StringExpression
     let actions: [Action]?
     
-    override init(object: JSONObject, state: State, registrar: Registrar, stylesheet: Stylesheet) {
+    override init(object: JSONObject, state: State, registrar: Registrar, stylesheet: Stylesheet, typeName: String? = nil) {
         textExpression = registrar.parseStringExpression(object: object["text"])!
         actions = registrar.parseActions(object: object["actions"])
-        super.init(object: object, state: state, registrar: registrar, stylesheet: stylesheet)
+        if actions != nil {
+            print("hgh")
+        }
+        super.init(object: object, state: state, registrar: registrar, stylesheet: stylesheet, typeName: actions != nil ? "link" : nil)
+        if actions != nil {
+            dump(self.style)
+        }
     }
     
     override func updateVariables() {
         text = textExpression.compute(state: state) ?? ""
+        super.updateVariables()
     }
 }

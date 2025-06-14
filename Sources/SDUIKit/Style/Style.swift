@@ -63,25 +63,25 @@ struct Style {
         italic = object["italic"] as? Bool
         underlined = object["underlined"] as? Bool
         color = object["color"] as? String
-        size = object["size"] as? Double
+        size = object["size"] as? Double ?? Double(object["size"] as? Int)
         font = object["font"] as? String
-        innerMargin = object["innerMargin"] as? Double
-        margin = object["margin"] as? Double
-        titleWidth = object["titleWidth"] as? Double
-        spaceBefore = object["spaceBefore"] as? Double
-        spaceAfter = object["spaceAfter"] as? Double
-        maxWidth = object["maxWidth"] as? Double
-        borderRadius = object["borderRadius"] as? Double
+        innerMargin = object["innerMargin"] as? Double ?? Double(object["innerMargin"] as? Int)
+        margin = object["margin"] as? Double ?? Double(object["margin"] as? Int)
+        titleWidth = object["titleWidth"] as? Double ?? Double(object["titleWidth"] as? Int)
+        spaceBefore = object["spaceBefore"] as? Double ?? Double(object["spaceBefore"] as? Int)
+        spaceAfter = object["spaceAfter"] as? Double ?? Double(object["spaceAfter"] as? Int)
+        maxWidth = object["maxWidth"] as? Double ?? Double(object["maxWidth"] as? Int)
+        borderRadius = object["borderRadius"] as? Double ?? Double(object["borderRadius"] as? Int)
         backgroundColor = object["backgroundColor"] as? String
         borderColor = object["borderColor"] as? String
-        borderWidth = object["borderWidth"] as? Double
-        height = object["height"] as? Double
-        width = object["width"] as? Double
-        shadow = object["shadow"] as? Double
+        borderWidth = object["borderWidth"] as? Double ?? Double(object["borderWidth"] as? Int)
+        height = object["height"] as? Double ?? Double(object["height"] as? Int)
+        width = object["width"] as? Double ?? Double(object["width"] as? Int)
+        shadow = object["shadow"] as? Double ?? Double(object["shadow"] as? Int)
     }
     
     func add(style: Style) -> Style {
-        return Style(style: self.style ?? style.style,
+        return Style(style: style.style,
                      variant: variant ?? style.variant,
                      visibility: visibility ?? style.visibility,
                      privacy: privacy ?? style.privacy,

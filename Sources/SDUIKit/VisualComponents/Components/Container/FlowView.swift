@@ -1,0 +1,61 @@
+import SwiftUI
+
+struct FlowView: View {
+    
+    var flow: Flow
+    
+    init(flow: Flow) {
+        self.flow = flow
+    }
+    
+    var body: some View {
+        ContainerView(container: flow) {
+            FlowLayout {
+                ComponentsView(components: flow.components)
+            }
+        }
+    }
+}
+
+struct FlowLayout: Layout {
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        var size = CGSize.zero
+        var rowWidth: CGFloat = 0
+        var rowHeight: CGFloat = 0
+        let maxWidth = proposal.width ?? .infinity
+        
+        for view in subviews {
+            let viewSize = view.sizeThatFits(.unspecified)
+            if rowWidth + viewSize.width > maxWidth {
+                size.height += rowHeight
+                size.width = max(size.width, rowWidth)
+                rowWidth = viewSize.width
+                rowHeight = viewSize.height
+            } else {
+                rowWidth += viewSize.width
+                rowHeight = max(rowHeight, viewSize.height)
+            }
+        }
+        size.height += rowHeight
+        size.width = max(size.width, rowWidth)
+        return size
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var x = bounds.minX
+        var y = bounds.minY
+        var rowHeight: CGFloat = 0
+
+        for view in subviews {
+            let size = view.sizeThatFits(.unspecified)
+            if x + size.width > bounds.maxX {
+                x = bounds.minX
+                y += rowHeight
+                rowHeight = 0
+            }
+            view.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(width: size.width, height: size.height))
+            x += size.width
+            rowHeight = max(rowHeight, size.height)
+        }
+    }
+}

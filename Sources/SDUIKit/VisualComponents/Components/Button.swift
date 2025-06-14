@@ -15,13 +15,13 @@ import SwiftUI
     private let enabledExpression: BooleanExpression?
     private let pressedStyleExpression: StyleExpression?
     
-    required init(object: JSONObject, screen: Screen, registrar: Registrar) {
+    required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         enabledExpression = registrar.parseBooleanExpression(object: object["enabled"])
         titleExpression = registrar.parseStringExpression(object: object["title"])
         imageExpression = registrar.parseStringExpression(object: object["image"])
-        pressedStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: screen.stack!.app!.stylesheet, styleName: "buttonPressed", prefix: "pressed")
+        pressedStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: screen.stack!.app!.stylesheet, styleName: "pressedButton", prefix: "pressed")
         actions = registrar.parseActions(object: object["actions"])
-        super.init(object: object, screen: screen, registrar: registrar)
+        super.init(object: object, screen: screen, registrar: registrar, typeName: "button")
     }
     
     override func updateVariables() {

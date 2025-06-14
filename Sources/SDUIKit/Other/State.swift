@@ -16,7 +16,6 @@ public final class State: ObservableObject {
         self.strings["app.timezone"] = TimeZone.current.identifier
         self.numbers["app.timeoffset"] = Double(TimeZone.current.secondsFromGMT(for: Date())) / 60
         self.booleans["app.darkmode"] = UITraitCollection.current.userInterfaceStyle == .dark
-        dump(self)
     }
     
     public init(strings: [String : String?] = [:], numbers: [String : Double?] = [:], booleans: [String : Bool?] = [:]) {
