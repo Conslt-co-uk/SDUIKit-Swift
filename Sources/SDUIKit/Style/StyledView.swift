@@ -3,11 +3,10 @@ import SwiftUI
 struct StyledModifier: ViewModifier {
     let style: Style
     @Environment(\.colorScheme) private var colorScheme
-
+    
     func body(content: Content) -> some View {
         let darkMode = colorScheme == .dark
         content
-            .padding(.horizontal, style.innerMargin ?? 0)
             .overlay {
                 RoundedRectangle(cornerRadius: style.borderRadius ?? 0)
                     .stroke(lineWidth: style.borderWidth ?? 1)

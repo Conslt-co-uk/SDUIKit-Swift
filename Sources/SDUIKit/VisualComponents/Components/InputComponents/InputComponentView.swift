@@ -28,6 +28,7 @@ struct InputComponentViewModifier: ViewModifier {
                     }
                     content
                         .padding(.vertical, (style.innerMargin ?? 0) - verticalShrink)
+                        .padding(.horizontal, style.innerMargin ?? 0)
                         .styled(style)
                     HStack(spacing: 0) {
                         Text(errorMessage)
@@ -60,6 +61,7 @@ struct InputComponentViewModifier: ViewModifier {
                     .styledMargin(errorStyle)
                     .styled(errorStyle)
                 }
+                .padding(.horizontal, style.innerMargin ?? 0)
                 .styled(style)
             case "underlined":
                 VStack(spacing: 0) {
@@ -108,16 +110,6 @@ struct InputComponentViewModifier: ViewModifier {
                         content
                     }
                     .padding(.vertical, style.innerMargin ?? 0)
-                    if errorMessage != "\u{00A0}" {
-                        HStack(spacing: 0) {
-                            Text(errorMessage)
-                                .multilineTextAlignment(.leading)
-                                .styledText(errorStyle)
-                            Spacer()
-                        }
-                        .styledMargin(errorStyle)
-                        .styled(errorStyle)
-                    }
                 }
                 .styled(style)
             }
