@@ -46,15 +46,18 @@ import Combine
     var ignoreSafeArea: String?
     var actions: [Action]?
     var largeTitle = false
-    
+    var customBarTitle = false
     var leftButtons: [Button]?
     var rightButtons: [Button]?
+    var navigationBarStyle: Style = Style(object: [:])
+    
     let nameExpression: StringExpression?
     let titleExpression: StringExpression
     let urlExpression: StringExpression?
     let ignoreSafeAreaExpression: StringExpression?
     let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
     let largeTitleExpression: BooleanExpression?
+    let navigationBarStyleExpression: StyleExpression?
     
     var showAlert: Bool = false
     {
@@ -81,6 +84,7 @@ import Combine
         largeTitleExpression = registrar.parseBooleanExpression(object: object["largeTitle"])
         ignoreSafeAreaExpression = registrar.parseStringExpression(object: object["ignoreSafeArea"])
         actions = registrar.parseActions(object: object["actions"])
+        navigationBarStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: stack.app!.stylesheet, styleName: "navigationBar")
         super.init(object: object, state: state, registrar: registrar, stylesheet: stack.app!.stylesheet, typeName: typeName)
         leftButtons = registrar.parseComponents(object: object["leftButtons"], screen: self)?.filter { $0 is Button} as? [Button]
         rightButtons = registrar.parseComponents(object: object["rightButtons"], screen: self)?.filter { $0 is Button} as? [Button]
@@ -95,6 +99,20 @@ import Combine
         name = nameExpression?.compute(state: state)
         ignoreSafeArea = ignoreSafeAreaExpression?.compute(state: state) ?? "all"
         largeTitle = largeTitleExpression?.compute(state: state) ?? false
+        navigationBarStyle = navigationBarStyleExpression?.style(state: state).add(style: style) ?? style
+        
+        if navigationBarStyle.color != nil
+            || navigationBarStyle.size != nil
+            || navigationBarStyle.font != nil
+            || navigationBarStyle.bold != nil
+            || navigationBarStyle.italic != nil
+            || navigationBarStyle.underlined != nil
+        {
+            largeTitle = false
+            customBarTitle = true
+        } else {
+            customBarTitle = false
+        }
         
         if let url = url {
             activity.title = title

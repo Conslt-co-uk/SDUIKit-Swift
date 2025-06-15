@@ -1,9 +1,15 @@
 import SwiftUI
+import UIKit
 
 struct ScreenView<Content: View>: View {
     
     @Bindable var screen: Screen
     @ViewBuilder let content: Content
+    
+    init(screen: Screen, @ViewBuilder content: () -> Content) {
+        self.screen = screen
+        self.content = content()
+    }
     
     @Environment(\.colorScheme) private var colorScheme
     
@@ -22,6 +28,7 @@ struct ScreenView<Content: View>: View {
     
     var body: some View {
         let darkMode = colorScheme == .dark
+        let navigationBarColor = screen.navigationBarStyle.backgroundColor
         ZStack {
             Color(sduiName: screen.style.backgroundColor, darkMode: darkMode)
                 .ignoresSafeArea(edges: edges)
@@ -34,6 +41,11 @@ struct ScreenView<Content: View>: View {
                 content
                     .styledMargin(screen.style)
             }
+        }
+        .if(navigationBarColor != nil) {
+            $0
+                .toolbarBackground(Color(sduiName: navigationBarColor!, darkMode: colorScheme == .dark), for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
         }
         .scrollDismissesKeyboard(.immediately)
         .toolbar {
@@ -81,6 +93,14 @@ struct ScreenView<Content: View>: View {
                     .frame(width: button.style.width ?? 38, height: button.style.height ?? 38)
                 }
             }
+            
+            if let title = screen.title, screen.customBarTitle {
+                ToolbarItem(placement: .principal) {
+                    Text(title)
+                        .styledText(screen.navigationBarStyle)
+                }
+            }
+            
             if screen.rightButtons?.count ?? 0 > 1 {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     VisualComponentView(screen.rightButtons![1])

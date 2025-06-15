@@ -44,7 +44,7 @@ extension Text {
     
     func styledText(_ style: Style, darkMode: Bool, dynamicTypeSize: DynamicTypeSize) -> Text {
         return self
-            .font(style.font != nil ? .custom(style.font!, size: style.size ?? 17) : .system(size: (style.size ?? 17) * dynamicTypeSize.multiplier))
+            .font(style.font != nil ? .custom(style.font!, size: style.size ?? 16) : .system(size: (style.size ?? 16) * dynamicTypeSize.multiplier))
             .bold(style.bold ?? false)
             .italic(style.italic ?? false)
             .underline(style.underlined ?? false)
