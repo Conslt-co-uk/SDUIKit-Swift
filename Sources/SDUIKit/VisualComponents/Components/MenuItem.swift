@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-@MainActor @Observable class Menu: Component, VisualProtocol {
+@MainActor @Observable class MenuItem: Component, VisualProtocol {
 
     var pressedStyle: Style = Style(object: [:])
     
@@ -19,9 +19,9 @@ import SwiftUI
         disclosureImageComponent = registrar.parseComponent(object: object["disclosureImage"], screen: screen) as? SDUIImage
         leftComponent = registrar.parseComponent(object: object["leftComponent"], screen: screen)!
         rightComponent = registrar.parseComponent(object: object["rightComponent"], screen: screen)
-        pressedStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: screen.stack!.app!.stylesheet, styleName: "pressedMenu", prefix: "pressed")
+        pressedStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: screen.stack!.app!.stylesheet, styleName: "pressedMenuItem", prefix: "pressed")
         actions = registrar.parseActions(object: object["actions"])
-        super.init(object: object, screen: screen, registrar: registrar, typeName: "menu")
+        super.init(object: object, screen: screen, registrar: registrar, typeName: "menuItem")
     }
     
     override func updateVariables() {
@@ -48,7 +48,7 @@ import SwiftUI
     @ViewBuilder
     func view() -> any View
     {
-        MenuView(menu: self)
+        MenuItemView(menu: self)
     }
 }
 

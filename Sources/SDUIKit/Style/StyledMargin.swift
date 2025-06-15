@@ -9,6 +9,7 @@ struct StyledMarginModifier: ViewModifier {
             .padding(.top, style.spaceBefore ?? 0)
             .padding(.bottom, style.spaceAfter ?? 0)
             .padding(.horizontal, style.margin ?? 0)
+            .frame(maxWidth: style.maxWidth ?? .infinity)
     }
 }
 

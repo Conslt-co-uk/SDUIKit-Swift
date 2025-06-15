@@ -84,9 +84,7 @@ import Combine
         super.init(object: object, state: state, registrar: registrar, stylesheet: stack.app!.stylesheet, typeName: typeName)
         leftButtons = registrar.parseComponents(object: object["leftButtons"], screen: self)?.filter { $0 is Button} as? [Button]
         rightButtons = registrar.parseComponents(object: object["rightButtons"], screen: self)?.filter { $0 is Button} as? [Button]
-        self.components = ((object["components"] as? [JSONValue]) ?? []).compactMap {
-            registrar.parseComponent(object: $0, screen: self)
-        }
+        components = registrar.parseComponents(object: object["components"], screen: self)!
     }
     
     override func updateVariables() {

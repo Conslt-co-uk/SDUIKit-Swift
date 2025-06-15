@@ -18,9 +18,15 @@ struct FormView: View {
     var body: some View {
         ScreenView(screen: form) {
             ScrollView(.vertical) {
-                VStack(spacing: 0) {
-                    ComponentsView(components: form.components)
+                HStack(spacing: 0) {
+                    Spacer().frame(maxWidth: 0)
+                    VStack(spacing: 0) {
+                        ComponentsView(components: form.components)
+                    }
+                    .frame(maxWidth: .infinity)
+                    Spacer().frame(maxWidth: 0)
                 }
+
             }
         }
     }

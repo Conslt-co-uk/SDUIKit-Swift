@@ -28,21 +28,14 @@ struct ScreenView<Content: View>: View {
             if let title = screen.title {
                 content
                     .styledMargin(screen.style)
-//                    .background {
-//                        Color(sduiName: screen.style.backgroundColor, darkMode: darkMode)
-//                            .ignoresSafeArea(edges: edges)
-//                    }
                     .navigationTitle(Text(title))
                     .navigationBarTitleDisplayMode(screen.largeTitle ? .large : .inline)
             } else {
                 content
                     .styledMargin(screen.style)
-//                    .background {
-//                        Color(sduiName: screen.style.backgroundColor, darkMode: darkMode)
-//                            .ignoresSafeArea(edges: edges)
-//                    }
             }
         }
+        .scrollDismissesKeyboard(.immediately)
         .toolbar {
             if screen.leftButtons?.count ?? 0 > 0 {
                 let button = screen.leftButtons![0]

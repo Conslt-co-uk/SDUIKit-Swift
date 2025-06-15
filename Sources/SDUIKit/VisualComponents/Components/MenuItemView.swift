@@ -1,11 +1,11 @@
 
 import SwiftUI
 
-struct MenuView: View {
+struct MenuItemView: View {
     
-    var viewModel: Menu
+    var viewModel: MenuItem
     
-    init(menu: Menu) {
+    init(menu: MenuItem) {
         self.viewModel = menu
     }
     

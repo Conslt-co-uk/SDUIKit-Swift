@@ -43,7 +43,7 @@ public class Registrar {
         componentTypes["divider"] = Divider.self
         componentTypes["progress"] = Progress.self
         componentTypes["image"] = SDUIImage.self
-        componentTypes["menu"] = Menu.self
+        componentTypes["menuItem"] = MenuItem.self
         
         actionTypes["alert"] = Alert.self
         actionTypes["confirm"] = Confirm.self
