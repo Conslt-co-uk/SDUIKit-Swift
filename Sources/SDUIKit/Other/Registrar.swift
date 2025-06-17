@@ -91,6 +91,7 @@ public class Registrar {
         booleanExpressionTypes["greaterOrEqual"] = Compare.self
         booleanExpressionTypes["regex"] = Regex.self
         booleanExpressionTypes["isNull"] = IsNull.self
+        booleanExpressionTypes["platform"] = BooleanPlatform.self
         
         numberExpressionTypes["constant"] = NumberConstant.self
         numberExpressionTypes["variable"] = NumberVariable.self
@@ -109,6 +110,7 @@ public class Registrar {
         numberExpressionTypes["max"] = NumberCompute.self
         numberExpressionTypes["round"] = Round.self
         numberExpressionTypes["length"] = Length.self
+        numberExpressionTypes["platform"] = NumberPlatform.self
         
         stringExpressionTypes["constant"] = StringConstant.self
         stringExpressionTypes["variable"] = StringVariable.self
@@ -119,6 +121,7 @@ public class Registrar {
         stringExpressionTypes["trim"] = Trim.self
         stringExpressionTypes["formatDate"] = FormatDate.self
         stringExpressionTypes["formatNumber"] = FormatNumber.self
+        stringExpressionTypes["platform"] = StringPlatform.self
     }
     
     func parseApp(object: JSONValue?) -> App? {
