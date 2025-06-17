@@ -65,6 +65,7 @@ public class Registrar {
         actionTypes["replaceApp"] = ReplaceApp.self
         actionTypes["validateScreen"] = ValidateScreen.self
         actionTypes["callback"] = Callback.self
+        actionTypes["platform"] = PlatformAction.self
         
         booleanExpressionTypes["constant"] = BooleanConstant.self
         booleanExpressionTypes["variable"] = BooleanVariable.self
