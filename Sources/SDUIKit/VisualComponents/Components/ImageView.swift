@@ -10,32 +10,18 @@ struct ImageView: View {
     
     var body: some View {
         HStack {
-            if image.style.alignment != "right" {
+            if image.style.alignment == "left" || image.style.alignment == "center" {
                 Spacer()
             }
-            AsyncImage(url: URL(string: image.image)) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipShape(RoundedRectangle(cornerRadius: self.image.style.borderRadius ?? 0))
-                        .styled(self.image.style)
-                case .failure(_):
-                    Image(systemName: "photo.badge.exclamationmark")
-                        .foregroundColor(.gray)
-                case .empty:
-                    SwiftUI.ProgressView()
-                @unknown default:
-                    EmptyView()
-                }
-            }
-            .frame(width: CGFloat(image.style.width), height: CGFloat(image.style.height))
-            if image.style.alignment != "left" {
+            DownloadImageView(url: URL(string: image.imageURL)!)
+                .clipShape(RoundedRectangle(cornerRadius: self.image.style.borderRadius ?? 0))
+                .padding(image.style.innerMargin ?? 0)
+                .styled(self.image.style)
+                .frame(width: CGFloat(image.style.width), height: CGFloat(image.style.height))
+            if image.style.alignment == "right" || image.style.alignment == "center" {
                 Spacer()
             }
         }
-        
         .padding(.top, image.style.spaceBefore ?? 0)
         .padding(.bottom, image.style.spaceAfter ?? 0)
         .padding(.horizontal, image.style.margin ?? 0)

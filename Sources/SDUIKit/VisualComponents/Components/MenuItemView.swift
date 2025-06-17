@@ -15,7 +15,7 @@ struct MenuItemView: View {
                 SwiftUI.Button {
                     viewModel.run()
                 } label: {
-                    HStack(spacing: 0) {
+                    HStack(spacing: 8) {
                         if let imageComponent = viewModel.imageComponent {
                             VisualComponentView(imageComponent)
                         }
@@ -36,7 +36,7 @@ struct MenuItemView: View {
                 }
                 .buttonStyle(MenuButtonStyle(style: viewModel.style, pressedStyle: viewModel.pressedStyle))
             } else {
-                HStack(spacing: 0) {
+                HStack(spacing: 8) {
                     if let imageComponent = viewModel.imageComponent {
                         VisualComponentView(imageComponent)
                     }

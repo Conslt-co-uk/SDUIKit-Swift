@@ -26,6 +26,27 @@ struct ScreenView<Content: View>: View {
         }
     }
     
+    @ViewBuilder
+    fileprivate func barButton(_ button: Button) -> some View {
+        if let image = button.image {
+            SwiftUI.Button {
+                button.run()
+            } label: {
+                VisualComponentView(image)
+            }
+            .if(button.title == nil) {
+                $0.accessibilityLabel(button.title ?? "")
+            }
+        } else {
+            SwiftUI.Button {
+                button.run()
+            } label: {
+                Text(button.title ?? "")
+                    .styledText(button.style)
+            }
+        }
+    }
+    
     var body: some View {
         let darkMode = colorScheme == .dark
         let navigationBarColor = screen.navigationBarStyle.backgroundColor
@@ -50,48 +71,13 @@ struct ScreenView<Content: View>: View {
         .scrollDismissesKeyboard(.immediately)
         .toolbar {
             if screen.leftButtons?.count ?? 0 > 0 {
-                let button = screen.leftButtons![0]
-                ToolbarItem(placement: .navigationBarLeading) {
-                    SwiftUI.Button {
-                        button.run()
-                    } label: {
-                        if let image = button.image {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFit()
-                        } else {
-                            Text(button.title ??  "")
-                        }
-                    }
-                    .frame(width: button.style.width ?? 38, height: button.style.height ?? 38)
-                }
+                ToolbarItem(placement: .topBarLeading) { barButton(screen.leftButtons![0]) }
             }
             if screen.leftButtons?.count ?? 0 > 1 {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    VisualComponentView(screen.leftButtons![1])
-                }
+                ToolbarItem(placement: .topBarLeading) { barButton(screen.leftButtons![1]) }
             }
             if screen.leftButtons?.count ?? 0 > 2 {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    VisualComponentView(screen.leftButtons![2])
-                }
-            }
-            if screen.rightButtons?.count ?? 0 > 0 {
-                let button = screen.rightButtons![0]
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    SwiftUI.Button {
-                        button.run()
-                    } label: {
-                        if let image = button.image {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFit()
-                        } else {
-                            Text(button.title ??  "")
-                        }
-                    }
-                    .frame(width: button.style.width ?? 38, height: button.style.height ?? 38)
-                }
+                ToolbarItem(placement: .topBarLeading) { barButton(screen.leftButtons![2]) }
             }
             
             if let title = screen.title, screen.customBarTitle {
@@ -101,16 +87,16 @@ struct ScreenView<Content: View>: View {
                 }
             }
             
+            if screen.rightButtons?.count ?? 0 > 0 {
+                ToolbarItem(placement: .topBarTrailing) { barButton(screen.rightButtons![0]) }
+            }
             if screen.rightButtons?.count ?? 0 > 1 {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    VisualComponentView(screen.rightButtons![1])
-                }
+                ToolbarItem(placement: .topBarTrailing) { barButton(screen.rightButtons![1]) }
             }
             if screen.rightButtons?.count ?? 0 > 2 {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    VisualComponentView(screen.rightButtons![2])
-                }
+                ToolbarItem(placement: .topBarTrailing) { barButton(screen.rightButtons![2]) }
             }
+            
         }
         .onAppear() {
             screen.onAppear()

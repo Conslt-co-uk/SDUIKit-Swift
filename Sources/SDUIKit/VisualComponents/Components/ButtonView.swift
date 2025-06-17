@@ -13,14 +13,34 @@ struct ButtonView: View {
         SwiftUI.Button {
             viewModel.run()
         } label: {
-            if let image = viewModel.image {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-            }
-            if let title = viewModel.title {
+            if let image = viewModel.image, let title = viewModel.title {
+                switch viewModel.position {
+                case "top":
+                    VStack(alignment: .center, spacing: 0) {
+                        VisualComponentView(image)
+                        Text(title)
+                    }
+                case "right":
+                    HStack(spacing: 0) {
+                        Text(title)
+                        VisualComponentView(image)
+                    }
+                case "bottom":
+                    VStack(alignment: .center, spacing: 0) {
+                        Text(title)
+                        VisualComponentView(image)
+                    }
+                default:
+                    HStack(spacing: 0) {
+                        VisualComponentView(image)
+                        Text(title)
+                    }
+                }
+            } else if let image = viewModel.image {
+                VisualComponentView(image)
+            } else if let title = viewModel.title {
                 Text(title)
-            }  
+            }
         }
         .buttonStyle(SDUIButtonStyle(style: viewModel.style, pressedStyle: viewModel.pressedStyle))
         .disabled(!(viewModel.enabled ?? true))

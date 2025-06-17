@@ -4,21 +4,22 @@ import SwiftUI
 @MainActor @Observable class Button: Component, VisualProtocol {
     
     var title: String?
-    var image: UIImage?
-    var imageURL: URL?
     var enabled: Bool?
     var pressedStyle: Style = Style(object: [:])
+    var position: String?
     
     private let actions: [Action]?
     private let titleExpression: StringExpression?
-    private let imageExpression: StringExpression?
     private let enabledExpression: BooleanExpression?
     private let pressedStyleExpression: StyleExpression?
+    private let positionExpression: StringExpression?
+    let image: SDUIImage?
     
     required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         enabledExpression = registrar.parseBooleanExpression(object: object["enabled"])
         titleExpression = registrar.parseStringExpression(object: object["title"])
-        imageExpression = registrar.parseStringExpression(object: object["image"])
+        positionExpression = registrar.parseStringExpression(object: object["position"])
+        image = registrar.parseComponent(object: object["image"], screen: screen) as? SDUIImage
         pressedStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: screen.stack!.app!.stylesheet, styleName: "pressedButton", prefix: "pressed")
         actions = registrar.parseActions(object: object["actions"])
         super.init(object: object, screen: screen, registrar: registrar, typeName: "button")
@@ -27,20 +28,9 @@ import SwiftUI
     override func updateVariables() {
         super.updateVariables()
         enabled = enabledExpression?.compute(state: state)
+        position = positionExpression?.compute(state: state)
         title = titleExpression?.compute(state: state)
-        if let imageString = imageExpression?.compute(state: state), let imageURL = URL(string: imageString) {
-            if imageURL != self.imageURL {
-                if let imageData = try? Data(contentsOf: imageURL) {
-                    image = UIImage(data: imageData)
-                } else {
-                    image = nil
-                }
-            }
-        } else {
-            imageURL = nil
-            image = nil
-        }
-        
+        image?.updateVariables()
         pressedStyle = pressedStyleExpression?.style(state: state).add(style: style) ?? style
     }
     

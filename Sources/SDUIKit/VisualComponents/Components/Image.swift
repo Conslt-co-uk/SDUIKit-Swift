@@ -3,18 +3,18 @@ import SwiftUI
 
 @MainActor @Observable class SDUIImage: Component, VisualProtocol {
     
-    var image: String = ""
+    var imageURL: String = ""
     
     private let imageExpression: StringExpression
     
     required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
-        imageExpression = registrar.parseStringExpression(object: object["image"] ?? 0)!
+        imageExpression = registrar.parseStringExpression(object: object["url"] ?? 0)!
         super.init(object: object, screen: screen, registrar: registrar, typeName: typeName ?? "image")
     }
     
     override func updateVariables() {
         super.updateVariables()
-        image = imageExpression.compute(state: state)!
+        imageURL = imageExpression.compute(state: state)!
     }
     
     @ViewBuilder
