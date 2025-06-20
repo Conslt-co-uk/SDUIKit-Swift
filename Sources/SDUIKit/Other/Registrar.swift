@@ -16,6 +16,7 @@ public class Registrar {
     private var booleanExpressionTypes: [String: BooleanExpression.Type] = [:]
     private var numberExpressionTypes: [String: NumberExpression.Type] = [:]
     private var stringExpressionTypes: [String: StringExpression.Type] = [:]
+    private var components: [String: JSONValue] = [:]
     
     public init() {
         appTypes["classic"] = ClassicApp.self
@@ -125,7 +126,15 @@ public class Registrar {
         stringExpressionTypes["platform"] = StringPlatform.self
     }
     
+    func updateComponents(_ components: [String: JSONValue]) {
+        self.components = components
+    }
+    
     func parseApp(object: JSONValue?) -> App? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as? String ?? "classic"
         let aType = appTypes[typeName]!
@@ -133,6 +142,10 @@ public class Registrar {
     }
     
     func parseStack(object: JSONValue?, state: State, app: App) -> Stack? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as? String ?? "navigation"
         let aType = stackTypes[typeName]!
@@ -140,6 +153,10 @@ public class Registrar {
     }
     
     func parseScreen(object: JSONValue?, stack: Stack, state: State) -> Screen? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as? String ?? "form"
         let aType = screenTypes[typeName]!
@@ -147,6 +164,12 @@ public class Registrar {
     }
     
     func parseComponent(object: JSONValue?, screen: Screen) -> Component? {
+        var object = object
+        if let name = object as? String,
+            name.starts(with: "library:"),
+            let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         if let object = object as? String {
             if object == "---" {
                 return Divider(object: [:], screen: screen, registrar: self)
@@ -160,6 +183,10 @@ public class Registrar {
     }
     
     func parseComponents(object: JSONValue?, screen: Screen) -> [Component]? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         guard let object = object else { return nil }
         guard let array = object as? [JSONValue] else {
             return [parseComponent(object: object, screen: screen)].compactMap { $0 }
@@ -168,6 +195,10 @@ public class Registrar {
     }
     
     func parseSpan(object: JSONValue?, screen: Screen) -> Span? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         guard let object = object else { return nil }
         if let _ = parseStringExpression(object: object) {
             return Span(object: ["text": object], state: screen.state, registrar: self, stylesheet: screen.stack!.app!.stylesheet)
@@ -180,6 +211,10 @@ public class Registrar {
     }
     
     func ParseSpans(object: JSONValue?, screen: Screen) -> [Span]? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         guard let object = object else { return nil }
         guard let array = object as? [JSONValue] else {
             return [parseSpan(object: object, screen: screen)].compactMap { $0 }
@@ -188,6 +223,10 @@ public class Registrar {
     }
     
     func parseAction(object: JSONValue?) -> Action? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as! String
         let aType = actionTypes[typeName]!
@@ -195,6 +234,10 @@ public class Registrar {
     }
     
     func parseActions(object: JSONValue?) -> [Action]? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         guard let object else { return nil }
         guard let array = object as? [JSONObject] else {
             return [parseAction(object: object)!]
@@ -203,6 +246,10 @@ public class Registrar {
     }
     
     func parseBooleanExpression(object: JSONValue?) -> BooleanExpression? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         if let constant = object as? Bool {
             return BooleanConstant(constant: constant)
         }
@@ -217,6 +264,10 @@ public class Registrar {
     }
     
     func parseBooleanExpressions(object: JSONValue?) -> [BooleanExpression]? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         if let array = object as? [JSONValue] {
             return array.compactMap { parseBooleanExpression(object: $0) }
         }
@@ -224,6 +275,10 @@ public class Registrar {
     }
     
     func parseNumberExpression(object: JSONValue?) -> NumberExpression? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         guard let object else { return nil }
         if let constant = object as? Int {
             return NumberConstant(constant: Double(constant))
@@ -242,6 +297,10 @@ public class Registrar {
     }
     
     func parseNumberExpressions(object: JSONValue?) -> [NumberExpression]? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         if let array = object as? [JSONValue] {
             return array.compactMap { parseNumberExpression(object: $0) }
         }
@@ -249,6 +308,10 @@ public class Registrar {
     }
     
     func parseStringExpression(object: JSONValue?) -> StringExpression? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         if let string = object as? String, string.hasPrefix("$"), string.hasSuffix("$"), string.count > 2 {
             let variable = string.trimmingCharacters(in: .init(charactersIn: "$"))
             return StringVariable(object: ["variable": variable], registrar: self)
@@ -263,6 +326,10 @@ public class Registrar {
     }
     
     func parseStringExpressions(object: JSONValue?) -> [StringExpression]? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
         if let array = object as? [JSONValue] {
             return array.compactMap { parseStringExpression(object: $0) }
         }

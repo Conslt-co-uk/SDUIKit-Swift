@@ -5,6 +5,7 @@ struct Stylesheet {
     let styles: [String: Style]
     let colors: [String: String]
     let images: [String: URL]
+    let components: [String: JSONValue]
     
     init(object: JSONObject?) {
         let styleDictionary = object?["styles"] as? [String: JSONObject]
@@ -13,6 +14,7 @@ struct Stylesheet {
         } ?? [:]
         colors = object?["colors"] as? [String: String] ?? [:]
         images = (object?["images"] as? [String: String] ?? [:]).compactMapValues { URL(string: $0) }
+        components = object?["library"] as? [String: JSONObject] ?? [:]
     }
     
     func color(name: String?) -> String? {

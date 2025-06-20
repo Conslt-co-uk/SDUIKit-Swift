@@ -4,11 +4,16 @@ import Foundation
     
     let registrar: Registrar
     let appObject: JSONObject
-    var app: App
+    var app: App {
+        didSet {
+            registrar.updateComponents(app.stylesheet.components)
+        }
+    }
     let callback: (([String: Any]) -> ())?
     let urlSession: URLSession
     
     public init(json: JSONObject, registrar: Registrar = Registrar(), urlSession: URLSession? = nil, callback: (([String: Any]) -> ())? = nil) {
+        registrar.updateComponents(json["library"] as? [String: JSONValue] ?? [:])
         self.app = registrar.parseApp(object: json)!
         self.registrar = registrar
         self.callback = callback
