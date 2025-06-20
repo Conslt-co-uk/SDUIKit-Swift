@@ -13,7 +13,7 @@ struct ImageView: View {
             if image.style.alignment == "left" || image.style.alignment == "center" {
                 Spacer()
             }
-            DownloadImageView(url: URL(string: image.imageURL)!)
+            DownloadImageView(url: image.imageURL ?? URL(string: "unknown")!)
                 .clipShape(RoundedRectangle(cornerRadius: self.image.style.borderRadius ?? 0))
                 .padding(image.style.innerMargin ?? 0)
                 .styled(self.image.style)

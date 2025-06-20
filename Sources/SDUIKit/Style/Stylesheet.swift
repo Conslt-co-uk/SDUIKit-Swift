@@ -1,7 +1,10 @@
+import Foundation
+
 struct Stylesheet {
     
     let styles: [String: Style]
     let colors: [String: String]
+    let images: [String: URL]
     
     init(object: JSONObject?) {
         let styleDictionary = object?["styles"] as? [String: JSONObject]
@@ -9,6 +12,7 @@ struct Stylesheet {
             result[element.key] = element.value
         } ?? [:]
         colors = object?["colors"] as? [String: String] ?? [:]
+        images = (object?["images"] as? [String: String] ?? [:]).compactMapValues { URL(string: $0) }
     }
     
     func color(name: String?) -> String? {
@@ -52,5 +56,14 @@ struct Stylesheet {
                              height: currentStyle.height,
                              width: currentStyle.width,
                              shadow: currentStyle.shadow)
+    }
+    
+    func imageFor(name: String?) -> URL? {
+        guard let name else { return nil }
+        if images.keys.contains(name) {
+            return images[name]
+        } else {
+            return URL(string: name)
+        }
     }
 }

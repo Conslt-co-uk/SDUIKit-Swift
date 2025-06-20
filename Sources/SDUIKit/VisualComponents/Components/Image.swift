@@ -3,7 +3,7 @@ import SwiftUI
 
 @MainActor @Observable class SDUIImage: Component, VisualProtocol {
     
-    var imageURL: String = ""
+    var imageURL: URL?
     
     private let imageExpression: StringExpression
     
@@ -14,7 +14,7 @@ import SwiftUI
     
     override func updateVariables() {
         super.updateVariables()
-        imageURL = imageExpression.compute(state: state)!
+        imageURL = screen.stack?.app?.stylesheet.imageFor(name: imageExpression.compute(state: state))
     }
     
     @ViewBuilder
