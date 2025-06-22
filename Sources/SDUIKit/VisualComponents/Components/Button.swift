@@ -31,7 +31,7 @@ import SwiftUI
         position = positionExpression?.compute(state: state)
         title = titleExpression?.compute(state: state)
         image?.updateVariables()
-        pressedStyle = pressedStyleExpression?.style(state: state).add(style: style) ?? style
+        pressedStyle = pressedStyleExpression?.style(state: state, stylesheet: screen.stack!.app!.stylesheet).add(style: style) ?? style
     }
     
     func run() {

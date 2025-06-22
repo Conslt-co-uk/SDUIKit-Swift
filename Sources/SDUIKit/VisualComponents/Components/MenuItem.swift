@@ -30,7 +30,7 @@ import SwiftUI
         disclosureImageComponent?.updateVariables()
         leftComponent.updateVariables()
         rightComponent?.updateVariables()
-        pressedStyle = pressedStyleExpression?.style(state: state).add(style: style) ?? style
+        pressedStyle = pressedStyleExpression?.style(state: state, stylesheet: screen.stack!.app!.stylesheet).add(style: style) ?? style
     }
     
     var hasActions: Bool {

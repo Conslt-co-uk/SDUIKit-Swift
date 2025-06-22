@@ -6,22 +6,26 @@ class TabStack: Stack, VisualProtocol {
     
     var variable = ""
     let variableExpression: StringExpression
-    var tabs: [Tab] = []
+    var tabs: [TabItem] = []
+    var tabBarStyle = Style(object: [:])
+    let tabBarStyleExpression: StyleExpression?
     
     required init(object: JSONObject, app: App, registrar: Registrar) {
         variableExpression = registrar.parseStringExpression(object: object["variable"])!
+        tabBarStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: app.stylesheet, styleName: "navigationBar")
         super.init(object: object, app: app, registrar: registrar)
         tabs = (object["tabs"] as! [JSONObject]).map {
-            Tab(object: $0, stack: self, registrar: registrar, stylesheet: app.stylesheet)
+            TabItem(object: $0, stack: self, registrar: registrar, stylesheet: app.stylesheet)
         }
     }
     
     override func updateVariables() {
         super.updateVariables()
+        tabBarStyle = tabBarStyleExpression?.style(state: state, stylesheet: app!.stylesheet) ?? Style(object: [:])
         variable = variableExpression.compute(state: state) ?? id.uuidString
     }
 
-    var currentTab: Tab {
+    var currentTab: TabItem {
         let variable = variableExpression.compute(state: state)
         let selectedName = state.stringValue(name: variable)
         if let tab = tabs.first(where: { $0.name == selectedName }) {

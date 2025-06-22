@@ -4,6 +4,7 @@ struct TabStackView: View {
     
     var tabStack: TabStack
     @ObservedObject var state: State
+    @Environment(\.colorScheme) private var colorScheme
     
     init(tabStack: TabStack) {
         self.tabStack = tabStack
@@ -15,8 +16,23 @@ struct TabStackView: View {
             SwiftUI.TabView(selection: state.stringBinding(name: tabStack.variable)) {
                 ForEach(tabStack.tabs) { aTab in
                     VisualComponentView(aTab)
+                        .if( aTab.stylesheet.color(name: "accent") != nil ) {
+                            $0.accentColor(Color(sduiName: aTab.stylesheet.color(name: "accent"), darkMode: colorScheme == .dark))
+                        }
                 }
+                .if(tabStack.tabBarStyle.backgroundColor != nil) {
+                    $0
+                        .toolbarBackground(.visible, for: .tabBar)
+                        .toolbarBackground(
+                            Color(sduiName: tabStack.tabBarStyle.backgroundColor, darkMode: colorScheme == .dark),
+                            for: .tabBar)
+                }
+                
             }
+            .if(tabStack.tabBarStyle.color != nil) {
+                $0.accentColor(Color(sduiName: tabStack.tabBarStyle.color, darkMode: colorScheme == .dark))
+            }
+
         }
     }
 }

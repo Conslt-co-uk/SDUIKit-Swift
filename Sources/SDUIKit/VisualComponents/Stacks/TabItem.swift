@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 @Observable @MainActor
-class Tab: VisualComponent, VisualProtocol {
+class TabItem: VisualComponent, VisualProtocol {
     
     var path: [Int] = []
     {
@@ -29,15 +29,16 @@ class Tab: VisualComponent, VisualProtocol {
     let titleExpression: StringExpression
     let badgeExpression: NumberExpression?
     let nameExpression: StringExpression
+    var image: SDUIImage! = nil
     
     init(object: JSONObject, stack: Stack, registrar: Registrar, stylesheet: Stylesheet) {
         titleExpression = registrar.parseStringExpression(object: object["title"])!
         badgeExpression = registrar.parseNumberExpression(object: object["badge"])
         nameExpression = registrar.parseStringExpression(object: object["name"])!
+        
         super.init(object: object, state: stack.state, registrar: registrar, stylesheet: stylesheet)
-        self.screens = ((object["screens"] as? [JSONValue]) ?? []).compactMap {
-            registrar.parseScreen(object: $0, stack: stack, state: stack.state)
-        }
+        self.screens = registrar.parseScreens(object: object["screens"], stack: stack, state: state) ?? []
+        self.image = (registrar.parseComponent(object: object["image"], screen: screens.first!) as! SDUIImage)
     }
     
     override func updateVariables() {
@@ -51,7 +52,7 @@ class Tab: VisualComponent, VisualProtocol {
     @ViewBuilder
     func view() -> any View
     {
-        TabView(tab: self)
+        TabItemView(tab: self)
     }
     
     func push(screen: Screen) {

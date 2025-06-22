@@ -32,8 +32,8 @@ import Foundation
         super.updateVariables()
         variable = variableExpression.compute(state: state)
         title = titleExpression.compute(state: state)
-        titleStyle = titleStyleExpression.style(state: state)
-        errorStyle = errorStyleExpression.style(state: state)
+        titleStyle = titleStyleExpression.style(state: state, stylesheet: screen.stack!.app!.stylesheet)
+        errorStyle = errorStyleExpression.style(state: state, stylesheet: screen.stack!.app!.stylesheet)
         errorMessage = validate ? firstErrorMessage : nil
     }
     

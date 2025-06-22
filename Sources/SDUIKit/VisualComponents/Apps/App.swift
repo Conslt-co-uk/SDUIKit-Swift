@@ -5,18 +5,13 @@ import SwiftUI
     
     var rootStack: Stack!
     weak var root: Root? = nil
-    let stylesheet: Stylesheet
     
     required init(object: JSONObject, registrar: Registrar) {
         let state = State(object: object["state"] as? JSONObject)
         let stylesheet = Stylesheet(object: object)
-        self.stylesheet = stylesheet
         super.init(object: object, state: state, registrar: registrar, stylesheet: stylesheet)
-        var stacks = ((object["stacks"] as? [JSONValue]) ?? []).compactMap {
-            registrar.parseStack(object: $0, state: state, app: self)
-        }
+        var stacks = registrar.parseStacks(object: object["stacks"], state: state, app: self) ?? []
         rootStack = stacks.removeFirst()
-        
         var stack = rootStack!
         while !stacks.isEmpty {
             let newStack = stacks.removeFirst()

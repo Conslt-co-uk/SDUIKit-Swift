@@ -13,9 +13,12 @@ import Combine
     private let styleExpression: StyleExpression
     
     var cancellables = Set<AnyCancellable>()
+    let stylesheet: Stylesheet
+    
     
     init(object: JSONObject, state: State, registrar: Registrar, stylesheet: Stylesheet, typeName: String? = nil) {
         self.state = state
+        self.stylesheet = stylesheet
         self.styleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: stylesheet, styleName: object["style"] as? String ?? typeName ?? "visualComponent")
         state.$booleans
             .dropFirst()
@@ -55,7 +58,7 @@ import Combine
     }
     
     func updateVariables() {
-        style = styleExpression.style(state: state)
+        style = styleExpression.style(state: state, stylesheet: stylesheet)
     }
     
 }

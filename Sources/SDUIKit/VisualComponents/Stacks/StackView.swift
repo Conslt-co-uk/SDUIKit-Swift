@@ -7,7 +7,7 @@ struct StackView<Content: View>: View {
     
     var body: some View {
         content
-        .sheet(item: $stack.presentedStack) { aStack in
+            .sheet(item: $stack.presentedStack) { aStack in
             VisualComponentView(aStack)
         }
         #if os(macOS)

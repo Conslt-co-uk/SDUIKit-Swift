@@ -99,7 +99,7 @@ import Combine
         name = nameExpression?.compute(state: state)
         ignoreSafeArea = ignoreSafeAreaExpression?.compute(state: state) ?? "all"
         largeTitle = largeTitleExpression?.compute(state: state) ?? false
-        navigationBarStyle = navigationBarStyleExpression?.style(state: state).add(style: style) ?? style
+        navigationBarStyle = navigationBarStyleExpression?.style(state: state, stylesheet: stack!.app!.stylesheet).add(style: style) ?? style
         
         if navigationBarStyle.color != nil
             || navigationBarStyle.size != nil

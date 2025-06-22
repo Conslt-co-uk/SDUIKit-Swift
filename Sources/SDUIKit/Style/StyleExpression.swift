@@ -79,7 +79,7 @@ struct StyleExpression {
         }
     }
     
-    func style(state: State) -> Style {
+    func style(state: State, stylesheet: Stylesheet) -> Style {
         return Style(
                       variant: variantExpression.compute(state: state),
                       visibility: visibilityExpression.compute(state: state),
@@ -88,7 +88,7 @@ struct StyleExpression {
                       bold: boldExpression.compute(state: state),
                       italic: italicExpression.compute(state: state),
                       underlined: underlinedExpression.compute(state: state),
-                      color: colorExpression.compute(state: state),
+                      color: stylesheet.color(name: colorExpression.compute(state: state)),
                       size: sizeExpression.compute(state: state),
                       font: fontExpression.compute(state: state),
                       innerMargin: innerMarginExpression.compute(state: state),
@@ -98,8 +98,8 @@ struct StyleExpression {
                       spaceAfter: spaceAfterExpression.compute(state: state),
                       maxWidth: maxWidthExpression.compute(state: state),
                       borderRadius: borderRadiusExpression.compute(state: state),
-                      backgroundColor: backgroundColorExpression.compute(state: state),
-                      borderColor: borderColorExpression.compute(state: state),
+                      backgroundColor: stylesheet.color(name: backgroundColorExpression.compute(state: state)),
+                      borderColor: stylesheet.color(name: borderColorExpression.compute(state: state)),
                       borderWidth: borderWidthExpression.compute(state: state),
                       height: heightExpression.compute(state: state),
                       width: widthExpression.compute(state: state),

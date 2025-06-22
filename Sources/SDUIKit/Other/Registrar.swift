@@ -152,6 +152,18 @@ public class Registrar {
         return aType.init(object: object, app: app, registrar: self)
     }
     
+    func parseStacks(object: JSONValue?, state: State, app: App) -> [Stack]? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
+        guard let object else { return nil }
+        guard let array = object as? [JSONObject] else {
+            return [parseStack(object: object, state: state, app: app)!]
+        }
+        return array.compactMap { parseStack(object: $0, state: state, app: app) }
+    }
+    
     func parseScreen(object: JSONValue?, stack: Stack, state: State) -> Screen? {
         var object = object
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
@@ -161,6 +173,19 @@ public class Registrar {
         let typeName = object["type"] as? String ?? "form"
         let aType = screenTypes[typeName]!
         return aType.init(object: object, stack: stack, state: state, registrar: self)
+    }
+    
+    
+    func parseScreens(object: JSONValue?, stack: Stack, state: State) -> [Screen]? {
+        var object = object
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            object = component
+        }
+        guard let object else { return nil }
+        guard let array = object as? [JSONObject] else {
+            return [parseScreen(object: object, stack: stack, state: state)!]
+        }
+        return array.compactMap { parseScreen(object: $0, stack: stack, state: state) }
     }
     
     func parseComponent(object: JSONValue?, screen: Screen) -> Component? {
