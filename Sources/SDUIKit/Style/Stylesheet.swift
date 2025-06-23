@@ -47,7 +47,6 @@ struct Stylesheet {
                              font: currentStyle.font,
                              innerMargin: currentStyle.innerMargin,
                              margin: currentStyle.margin,
-                             titleWidth: currentStyle.titleWidth,
                              spaceBefore: currentStyle.spaceBefore,
                              spaceAfter: currentStyle.spaceAfter,
                              maxWidth: currentStyle.maxWidth,

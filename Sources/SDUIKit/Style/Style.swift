@@ -14,7 +14,6 @@ struct Style {
     let font: String?
     let innerMargin: Double?
     let margin: Double?
-    let titleWidth: Double?
     let spaceBefore: Double?
     let spaceAfter: Double?
     let maxWidth: Double?
@@ -26,7 +25,7 @@ struct Style {
     let width: Double?
     let shadow: Double?
     
-    init(style: String? = nil, variant: String? = nil, visibility: Bool? = nil, privacy: Bool? = nil, alignment: String? = nil, bold: Bool? = nil, italic: Bool? = nil, underlined: Bool? = nil, color: String? = nil, size: Double? = nil, font: String? = nil, innerMargin: Double? = nil, margin: Double? = nil, titleWidth: Double? = nil, spaceBefore: Double? = nil, spaceAfter: Double? = nil, maxWidth: Double? = nil, borderRadius: Double? = nil, backgroundColor: String? = nil, borderColor: String? = nil, borderWidth: Double? = nil, height: Double? = nil, width: Double? = nil, shadow: Double? = nil) {
+    init(style: String? = nil, variant: String? = nil, visibility: Bool? = nil, privacy: Bool? = nil, alignment: String? = nil, bold: Bool? = nil, italic: Bool? = nil, underlined: Bool? = nil, color: String? = nil, size: Double? = nil, font: String? = nil, innerMargin: Double? = nil, margin: Double? = nil, spaceBefore: Double? = nil, spaceAfter: Double? = nil, maxWidth: Double? = nil, borderRadius: Double? = nil, backgroundColor: String? = nil, borderColor: String? = nil, borderWidth: Double? = nil, height: Double? = nil, width: Double? = nil, shadow: Double? = nil) {
         self.style = style
         self.variant = variant
         self.visibility = visibility
@@ -40,7 +39,6 @@ struct Style {
         self.font = font
         self.innerMargin = innerMargin
         self.margin = margin
-        self.titleWidth = titleWidth
         self.spaceBefore = spaceBefore
         self.spaceAfter = spaceAfter
         self.maxWidth = maxWidth
@@ -67,7 +65,6 @@ struct Style {
         font = object["font"] as? String
         innerMargin = object["innerMargin"] as? Double ?? Double(object["innerMargin"] as? Int)
         margin = object["margin"] as? Double ?? Double(object["margin"] as? Int)
-        titleWidth = object["titleWidth"] as? Double ?? Double(object["titleWidth"] as? Int)
         spaceBefore = object["spaceBefore"] as? Double ?? Double(object["spaceBefore"] as? Int)
         spaceAfter = object["spaceAfter"] as? Double ?? Double(object["spaceAfter"] as? Int)
         maxWidth = object["maxWidth"] as? Double ?? Double(object["maxWidth"] as? Int)

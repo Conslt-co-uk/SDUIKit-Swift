@@ -14,7 +14,6 @@ struct StyleExpression {
     private let fontExpression: StringExpression
     private let innerMarginExpression: NumberExpression
     private let marginExpression: NumberExpression
-    private let titleWidthExpression: NumberExpression
     private let spaceBeforeExpression: NumberExpression
     private let spaceAfterExpression: NumberExpression
     private let maxWidthExpression: NumberExpression
@@ -41,7 +40,6 @@ struct StyleExpression {
             self.fontExpression = registrar.parseStringExpression(object: object[prefix + "Font"]) ?? StringConstant(constant: style?.font)
             self.innerMarginExpression = registrar.parseNumberExpression(object: object[prefix + "InnerMargin"]) ?? NumberConstant(constant: style?.innerMargin)
             self.marginExpression = registrar.parseNumberExpression(object: object[prefix + "Margin"]) ?? NumberConstant(constant: style?.margin)
-            self.titleWidthExpression = registrar.parseNumberExpression(object: object[prefix + "TitleWidth"]) ?? NumberConstant(constant: style?.titleWidth)
             self.spaceBeforeExpression = registrar.parseNumberExpression(object: object[prefix + "SpaceBefore"]) ?? NumberConstant(constant: style?.spaceBefore)
             self.spaceAfterExpression = registrar.parseNumberExpression(object: object[prefix + "SpaceAfter"]) ?? NumberConstant(constant: style?.spaceAfter)
             self.maxWidthExpression = registrar.parseNumberExpression(object: object[prefix + "MaxWidth"]) ?? NumberConstant(constant: style?.maxWidth)
@@ -65,7 +63,6 @@ struct StyleExpression {
             self.fontExpression = registrar.parseStringExpression(object: object["font"]) ?? StringConstant(constant: style?.font)
             self.innerMarginExpression = registrar.parseNumberExpression(object: object["innerMargin"]) ?? NumberConstant(constant: style?.innerMargin)
             self.marginExpression = registrar.parseNumberExpression(object: object["margin"]) ?? NumberConstant(constant: style?.margin)
-            self.titleWidthExpression = registrar.parseNumberExpression(object: object["titleWidth"]) ?? NumberConstant(constant: style?.titleWidth)
             self.spaceBeforeExpression = registrar.parseNumberExpression(object: object["spaceBefore"]) ?? NumberConstant(constant: style?.spaceBefore)
             self.spaceAfterExpression = registrar.parseNumberExpression(object: object["spaceAfter"]) ?? NumberConstant(constant: style?.spaceAfter)
             self.maxWidthExpression = registrar.parseNumberExpression(object: object["maxWidth"]) ?? NumberConstant(constant: style?.maxWidth)
@@ -93,7 +90,6 @@ struct StyleExpression {
                       font: fontExpression.compute(state: state),
                       innerMargin: innerMarginExpression.compute(state: state),
                       margin: marginExpression.compute(state: state),
-                      titleWidth: titleWidthExpression.compute(state: state),
                       spaceBefore: spaceBeforeExpression.compute(state: state),
                       spaceAfter: spaceAfterExpression.compute(state: state),
                       maxWidth: maxWidthExpression.compute(state: state),
