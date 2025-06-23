@@ -6,7 +6,6 @@ import Foundation
 
     required init(object: JSONObject, registrar: Registrar) {
         titleExpression = registrar.parseStringExpression(object: object["title"])
-        
     }
     
     func run(screen: Screen) async throws(ActionError) {

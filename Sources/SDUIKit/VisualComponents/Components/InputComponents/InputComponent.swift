@@ -39,6 +39,6 @@ import Foundation
     
     var firstErrorMessage: String? {
         let firstInvalidValidation = validationExpressions?.first { !($0.compute(state: state) ?? false) }
-        return firstInvalidValidation?.messageExpression?.compute(state: state)
+        return firstInvalidValidation?.longMessageExpression?.compute(state: state) ?? firstInvalidValidation?.messageExpression?.compute(state: state)
     }
 }
