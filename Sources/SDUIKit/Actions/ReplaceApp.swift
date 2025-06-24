@@ -2,11 +2,11 @@ import Foundation
 
 @MainActor class ReplaceApp: Action {
     
-    let appObject: JSONObject
+    let appObject: JSONValue
     let registrar: Registrar
     
     required init(object: JSONObject, registrar: Registrar) {
-        self.appObject = object["app"] as! JSONObject
+        self.appObject = object["app"]!
         self.registrar = registrar
     }
     

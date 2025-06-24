@@ -2,11 +2,11 @@ import Foundation
 
 @MainActor class Present: Action {
     
-    let stackObject: JSONObject
+    let stackObject: JSONValue
     let registrar: Registrar
     
     required init(object: JSONObject, registrar: Registrar) {
-        self.stackObject = object["stack"] as! JSONObject
+        self.stackObject = object["stack"]!
         self.registrar = registrar
     }
     

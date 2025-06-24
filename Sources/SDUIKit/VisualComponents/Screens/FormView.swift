@@ -26,7 +26,6 @@ struct FormView: View {
                     .frame(maxWidth: .infinity)
                     Spacer().frame(maxWidth: 0)
                 }
-
             }
         }
     }

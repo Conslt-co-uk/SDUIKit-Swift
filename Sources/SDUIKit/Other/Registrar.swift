@@ -16,7 +16,7 @@ public class Registrar {
     private var booleanExpressionTypes: [String: BooleanExpression.Type] = [:]
     private var numberExpressionTypes: [String: NumberExpression.Type] = [:]
     private var stringExpressionTypes: [String: StringExpression.Type] = [:]
-    private var components: [String: JSONValue] = [:]
+    var components: [String: JSONValue] = [:]
     
     public init() {
         appTypes["classic"] = ClassicApp.self

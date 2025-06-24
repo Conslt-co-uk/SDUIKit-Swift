@@ -53,7 +53,6 @@ import Foundation
     }
     
     func replaceScreen(screenObject: JSONObject, registrar: Registrar) {
-        print("replace screen")
         screens = screens.map { aScreen in
             if let aName = aScreen.name, aName == screenObject["name"] as? String {
                 return registrar.parseScreen(object: screenObject, stack: self, state: aScreen.state)!

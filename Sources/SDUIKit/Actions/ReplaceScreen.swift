@@ -6,7 +6,12 @@ import Foundation
     let registrar: Registrar
     
     required init(object: JSONObject, registrar: Registrar) {
-        self.screenObject = object["screen"] as! JSONObject
+        let objectOrName = object["screen"]!
+        if let name = objectOrName as? String {
+            self.screenObject = registrar.components[name] as! JSONObject
+        } else {
+            self.screenObject = object["screen"] as! JSONObject
+        }
         self.registrar = registrar
     }
     

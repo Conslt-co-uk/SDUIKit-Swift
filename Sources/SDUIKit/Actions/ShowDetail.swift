@@ -2,11 +2,11 @@ import Foundation
 
 @MainActor class ShowDetail: Action {
     
-    let screenObject: JSONObject
+    let screenObject: JSONValue
     let registrar: Registrar
     
     required init(object: JSONObject, registrar: Registrar) {
-        self.screenObject = object["screen"] as! JSONObject
+        self.screenObject = object["screen"]!
         self.registrar = registrar
     }
     

@@ -13,7 +13,7 @@ struct SplitStackView: View {
     
     var body: some View {
         StackView(stack: splitStack) {
-            NavigationSplitView {
+            NavigationSplitView(columnVisibility: $splitStack.columnVisibility) {
                 VisualComponentView(splitStack.screens.first!)
             } detail: {
                 NavigationStack(path: $splitStack.path) {
