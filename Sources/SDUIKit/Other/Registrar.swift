@@ -66,7 +66,6 @@ public class Registrar {
         actionTypes["replaceApp"] = ReplaceApp.self
         actionTypes["validateScreen"] = ValidateScreen.self
         actionTypes["callback"] = Callback.self
-        actionTypes["platform"] = PlatformAction.self
         
         booleanExpressionTypes["constant"] = BooleanConstant.self
         booleanExpressionTypes["variable"] = BooleanVariable.self
@@ -93,7 +92,6 @@ public class Registrar {
         booleanExpressionTypes["greaterOrEqual"] = Compare.self
         booleanExpressionTypes["regex"] = Regex.self
         booleanExpressionTypes["isNull"] = IsNull.self
-        booleanExpressionTypes["platform"] = BooleanPlatform.self
         
         numberExpressionTypes["constant"] = NumberConstant.self
         numberExpressionTypes["variable"] = NumberVariable.self
@@ -112,7 +110,6 @@ public class Registrar {
         numberExpressionTypes["max"] = NumberCompute.self
         numberExpressionTypes["round"] = Round.self
         numberExpressionTypes["length"] = Length.self
-        numberExpressionTypes["platform"] = NumberPlatform.self
         
         stringExpressionTypes["constant"] = StringConstant.self
         stringExpressionTypes["variable"] = StringVariable.self
@@ -123,7 +120,6 @@ public class Registrar {
         stringExpressionTypes["trim"] = Trim.self
         stringExpressionTypes["formatDate"] = FormatDate.self
         stringExpressionTypes["formatNumber"] = FormatNumber.self
-        stringExpressionTypes["platform"] = StringPlatform.self
     }
     
     func updateComponents(_ components: [String: JSONValue]) {
@@ -131,9 +127,11 @@ public class Registrar {
     }
     
     func parseApp(object: JSONValue?) -> App? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseApp(object: object["iOS"])
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseApp(object: component)
         }
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as? String ?? "classic"
@@ -142,9 +140,11 @@ public class Registrar {
     }
     
     func parseStack(object: JSONValue?, state: State, app: App) -> Stack? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseStack(object: object["iOS"], state: state, app: app)
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseStack(object: component, state: state, app: app)
         }
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as? String ?? "navigation"
@@ -153,9 +153,11 @@ public class Registrar {
     }
     
     func parseStacks(object: JSONValue?, state: State, app: App) -> [Stack]? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseStacks(object: object["iOS"], state: state, app: app)
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseStacks(object: component, state: state, app: app)
         }
         guard let object else { return nil }
         guard let array = object as? [JSONObject] else {
@@ -165,9 +167,11 @@ public class Registrar {
     }
     
     func parseScreen(object: JSONValue?, stack: Stack, state: State) -> Screen? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseScreen(object: object["iOS"], stack: stack, state: state)
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseScreen(object: component, stack: stack, state: state)
         }
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as? String ?? "form"
@@ -177,9 +181,11 @@ public class Registrar {
     
     
     func parseScreens(object: JSONValue?, stack: Stack, state: State) -> [Screen]? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseScreens(object: object["iOS"], stack: stack, state: state)
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseScreens(object: component, stack: stack, state: state)
         }
         guard let object else { return nil }
         guard let array = object as? [JSONObject] else {
@@ -189,11 +195,11 @@ public class Registrar {
     }
     
     func parseComponent(object: JSONValue?, screen: Screen) -> Component? {
-        var object = object
-        if let name = object as? String,
-            name.starts(with: "library:"),
-            let component = components[String(name.dropFirst(8))] {
-            object = component
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseComponent(object: object["iOS"], screen: screen)
+        }
+        if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
+            return parseComponent(object: component, screen: screen)
         }
         if let object = object as? String {
             if object == "---" {
@@ -208,9 +214,11 @@ public class Registrar {
     }
     
     func parseComponents(object: JSONValue?, screen: Screen) -> [Component]? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseComponents(object: object["iOS"], screen: screen)
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseComponents(object: component, screen: screen)
         }
         guard let object = object else { return nil }
         guard let array = object as? [JSONValue] else {
@@ -220,9 +228,11 @@ public class Registrar {
     }
     
     func parseSpan(object: JSONValue?, screen: Screen) -> Span? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseSpan(object: object["iOS"], screen: screen)
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseSpan(object: component, screen: screen)
         }
         guard let object = object else { return nil }
         if let _ = parseStringExpression(object: object) {
@@ -236,9 +246,11 @@ public class Registrar {
     }
     
     func ParseSpans(object: JSONValue?, screen: Screen) -> [Span]? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return ParseSpans(object: object["iOS"], screen: screen)
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return ParseSpans(object: component, screen: screen)
         }
         guard let object = object else { return nil }
         guard let array = object as? [JSONValue] else {
@@ -248,9 +260,11 @@ public class Registrar {
     }
     
     func parseAction(object: JSONValue?) -> Action? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseAction(object: object["iOS"])
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseAction(object: component)
         }
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as! String
@@ -259,9 +273,11 @@ public class Registrar {
     }
     
     func parseActions(object: JSONValue?) -> [Action]? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseActions(object: object["iOS"])
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseActions(object: component)
         }
         guard let object else { return nil }
         guard let array = object as? [JSONObject] else {
@@ -271,9 +287,11 @@ public class Registrar {
     }
     
     func parseBooleanExpression(object: JSONValue?) -> BooleanExpression? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseBooleanExpression(object: object["iOS"])
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseBooleanExpression(object: component)
         }
         if let constant = object as? Bool {
             return BooleanConstant(constant: constant)
@@ -289,9 +307,11 @@ public class Registrar {
     }
     
     func parseBooleanExpressions(object: JSONValue?) -> [BooleanExpression]? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseBooleanExpressions(object: object["iOS"])
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseBooleanExpressions(object: component)
         }
         if let array = object as? [JSONValue] {
             return array.compactMap { parseBooleanExpression(object: $0) }
@@ -300,9 +320,11 @@ public class Registrar {
     }
     
     func parseNumberExpression(object: JSONValue?) -> NumberExpression? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseNumberExpression(object: object["iOS"])
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseNumberExpression(object: component)
         }
         guard let object else { return nil }
         if let constant = object as? Int {
@@ -322,9 +344,11 @@ public class Registrar {
     }
     
     func parseNumberExpressions(object: JSONValue?) -> [NumberExpression]? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseNumberExpressions(object: object["iOS"])
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseNumberExpressions(object: component)
         }
         if let array = object as? [JSONValue] {
             return array.compactMap { parseNumberExpression(object: $0) }
@@ -333,9 +357,11 @@ public class Registrar {
     }
     
     func parseStringExpression(object: JSONValue?) -> StringExpression? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseStringExpression(object: object["iOS"])
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseStringExpression(object: component)
         }
         if let string = object as? String, string.hasPrefix("$"), string.hasSuffix("$"), string.count > 2 {
             let variable = string.trimmingCharacters(in: .init(charactersIn: "$"))
@@ -351,9 +377,11 @@ public class Registrar {
     }
     
     func parseStringExpressions(object: JSONValue?) -> [StringExpression]? {
-        var object = object
+        if let object = object as? [String: JSONValue], object["iOS"] != nil || object["android"] != nil || object["web"] != nil {
+            return parseStringExpressions(object: object["iOS"])
+        }
         if let name = object as? String, name.starts(with: "library:"), let component = components[String(name.dropFirst(8))] {
-            object = component
+            return parseStringExpressions(object: component)
         }
         if let array = object as? [JSONValue] {
             return array.compactMap { parseStringExpression(object: $0) }

@@ -15,6 +15,9 @@ struct SplitStackView: View {
         StackView(stack: splitStack) {
             NavigationSplitView(preferredCompactColumn: $splitStack.preferredColumn) {
                 VisualComponentView(splitStack.screens.first!)
+                    .if(splitStack.screens.first?.style.width != nil) {
+                        $0.navigationSplitViewColumnWidth(ideal: splitStack.screens.first?.style.width ?? 400)
+                    }
             } detail: {
                 NavigationStack(path: $splitStack.path) {
                     let otherScreens = splitStack.screens.dropFirst()
@@ -26,6 +29,7 @@ struct SplitStackView: View {
                     }
                 }
             }
+            
         }
     }
 }
