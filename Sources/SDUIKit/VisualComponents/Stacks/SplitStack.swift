@@ -4,13 +4,11 @@ import SwiftUI
 @Observable @MainActor
 class SplitStack: Stack, VisualProtocol {
 
-    var columnVisibility =  NavigationSplitViewVisibility.automatic
-    
+    var preferredColumn = NavigationSplitViewColumn.sidebar
     
     func showDetails(screen: Screen) {
         screens = [screens.first!, screen]
-        print("columnVisibility: \(columnVisibility)")
-        columnVisibility = .detailOnly
+        preferredColumn = .detail
     }
     
     @ViewBuilder
