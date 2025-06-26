@@ -84,7 +84,7 @@ import Combine
         largeTitleExpression = registrar.parseBooleanExpression(object: object["largeTitle"])
         ignoreSafeAreaExpression = registrar.parseStringExpression(object: object["ignoreSafeArea"])
         actions = registrar.parseActions(object: object["actions"])
-        navigationBarStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: stack.app!.stylesheet, styleName: "navigationBar")
+        navigationBarStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: stack.app!.stylesheet, styleName: "navigationBar", prefix: "navigationBar")
         super.init(object: object, state: state, registrar: registrar, stylesheet: stack.app!.stylesheet, typeName: typeName)
         leftButtons = registrar.parseComponents(object: object["leftButtons"], screen: self)?.filter { $0 is Button} as? [Button]
         rightButtons = registrar.parseComponents(object: object["rightButtons"], screen: self)?.filter { $0 is Button} as? [Button]

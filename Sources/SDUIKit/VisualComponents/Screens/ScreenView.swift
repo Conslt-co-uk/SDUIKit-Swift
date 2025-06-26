@@ -63,11 +63,6 @@ struct ScreenView<Content: View>: View {
                     .styledMargin(screen.style)
             }
         }
-        .if(navigationBarColor != nil) {
-            $0
-                .toolbarBackground(Color(sduiName: navigationBarColor!, darkMode: colorScheme == .dark), for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
-        }
         .scrollDismissesKeyboard(.immediately)
         .toolbar {
             if screen.leftButtons?.count ?? 0 > 0 {
@@ -96,7 +91,11 @@ struct ScreenView<Content: View>: View {
             if screen.rightButtons?.count ?? 0 > 2 {
                 ToolbarItem(placement: .topBarTrailing) { barButton(screen.rightButtons![2]) }
             }
-            
+        }
+        .if(navigationBarColor != nil) {
+            $0
+                .toolbarBackground(Color(sduiName: navigationBarColor!, darkMode: colorScheme == .dark), for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
         }
         .onAppear() {
             screen.onAppear()
