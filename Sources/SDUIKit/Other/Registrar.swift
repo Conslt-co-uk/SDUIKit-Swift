@@ -160,7 +160,7 @@ public class Registrar {
             return parseStacks(object: component, state: state, app: app)
         }
         guard let object else { return nil }
-        guard let array = object as? [JSONObject] else {
+        guard let array = object as? [JSONValue] else {
             return [parseStack(object: object, state: state, app: app)!]
         }
         return array.compactMap { parseStack(object: $0, state: state, app: app) }
@@ -188,7 +188,7 @@ public class Registrar {
             return parseScreens(object: component, stack: stack, state: state)
         }
         guard let object else { return nil }
-        guard let array = object as? [JSONObject] else {
+        guard let array = object as? [JSONValue] else {
             return [parseScreen(object: object, stack: stack, state: state)!]
         }
         return array.compactMap { parseScreen(object: $0, stack: stack, state: state) }
@@ -280,7 +280,7 @@ public class Registrar {
             return parseActions(object: component)
         }
         guard let object else { return nil }
-        guard let array = object as? [JSONObject] else {
+        guard let array = object as? [JSONValue] else {
             return [parseAction(object: object)!]
         }
         return array.compactMap { parseAction(object: $0) }

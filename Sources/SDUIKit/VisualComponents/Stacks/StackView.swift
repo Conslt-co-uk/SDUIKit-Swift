@@ -8,10 +8,11 @@ struct StackView<Content: View>: View {
     var body: some View {
         content
             .sheet(item: $stack.presentedStack) { aStack in
-            VisualComponentView(aStack)
-        }
-        #if os(macOS)
-        .sheet(isPresented: $stack.overlay)
+                VisualComponentView(aStack)
+                    .interactiveDismissDisabled()
+            }
+#if os(macOS)
+            .sheet(isPresented: $stack.overlay)
         {
             
             ZStack {
@@ -20,7 +21,7 @@ struct StackView<Content: View>: View {
             }
             .presentationBackground(Color.gray.opacity(0.4))
         }
-        #else
+#else
         .fullScreenCover(isPresented: $stack.overlay)
         {
             
@@ -30,7 +31,7 @@ struct StackView<Content: View>: View {
             }
             .presentationBackground(Color.gray.opacity(0.4))
         }
-        #endif
+#endif
         
     }
 }

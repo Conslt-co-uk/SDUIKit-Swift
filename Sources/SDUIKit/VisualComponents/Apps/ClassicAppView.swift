@@ -18,12 +18,10 @@ struct ClassicAppView: View {
     }
     
     var body: some View {
-        if let accent = app.stylesheet.colors["accent"] {
-            VisualComponentView(app.rootStack)
-                .accentColor(Color(hex: accent, darkMode: colorScheme == .dark))
-        } else {
-            VisualComponentView(app.rootStack)
-        }
-        
+        let accent = app.stylesheet.colors["accent"]
+        VisualComponentView(app.rootStack)
+            .if(accent != nil) {
+                $0.accentColor(Color(hex: accent!, darkMode: colorScheme == .dark))
+            }
     }
 }

@@ -35,9 +35,7 @@ import Foundation
         self.copyState = copyState
         let state = copyState ? app.state.copy() : app.state
         super.init(object: object, state: state, registrar: registrar, stylesheet: app.stylesheet)
-        self.screens = ((object["screens"] as? [JSONValue]) ?? []).compactMap {
-            registrar.parseScreen(object: $0, stack: self, state: state)
-        }
+        self.screens = registrar.parseScreens(object: object["screens"], stack: self, state: state)!
     }
     
     func push(screen: Screen) {

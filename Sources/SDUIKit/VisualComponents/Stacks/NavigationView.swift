@@ -20,7 +20,6 @@ struct NavigationView: View {
                     if navigation.screens.count > index {
                         VisualComponentView(navigation.screens[index])
                     }
-                    
                 }
         }
     }
