@@ -7,6 +7,7 @@ struct ContainerView<Content: View>: View {
     
     var body: some View {
         content
+            .frame(width: CGFloat(container.style.width), height: CGFloat(container.style.height))
             .styled(container.style)
             .styledMargin(container.style)
         

@@ -10,8 +10,11 @@ struct FlowView: View {
     
     var body: some View {
         ContainerView(container: flow) {
-            FlowLayout {
-                ComponentsView(components: flow.components)
+            HStack {
+                FlowLayout {
+                    ComponentsView(components: flow.components)
+                }
+                Spacer()
             }
         }
     }
