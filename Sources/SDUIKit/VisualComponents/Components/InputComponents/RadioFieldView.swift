@@ -14,40 +14,48 @@ struct TickView: View {
     let ticked: Bool
     @SwiftUI.State var isPressed = false
     let action: ()->()
-    
+   
+    var margin: CGFloat {
+        if ["underlined", "inside", "outside"].contains(style.variant ?? "") {
+            return style.innerMargin ?? 0
+        } else {
+            return (style.innerMargin ?? 0) + (style.margin ?? 0)
+        }
+    }
+
     var body: some View {
         
-        HStack {
-            Text(title)
-                .styledText(style)
-            Spacer()
-            Image(systemName: "checkmark")
-                .padding(.vertical, 6)
-                .foregroundColor(ticked ? .primary : .clear)
+        SwiftUI.Button {
+            action()
+        } label: {
+            HStack {
+                Image(systemName: "checkmark")
+                    .padding(.vertical, 6)
+                    .foregroundColor(ticked ? .primary : .clear)
+                Text(title)
+                    .styledText(style)
+                Spacer()
+               
+            }
+            .contentShape(Rectangle())
+            .padding(.horizontal, margin)
         }
-        .contentShape(Rectangle())
-        .background {
-            if isPressed {
-                Color.gray.opacity(0.2)
-                    .padding(.horizontal, -(style.margin ?? 0))
-            } else {
-                EmptyView()
+        .buttonStyle(TickButtonStyle())
+        .padding(.horizontal, -margin)
+        
+    }
+    
+    struct TickButtonStyle: ButtonStyle {
+        
+        func makeBody(configuration: Configuration) -> some View {
+            ZStack {
+                if configuration.isPressed {
+                    Color.secondary.opacity(0.2)
+                        
+                }
+                configuration.label
             }
         }
-        .gesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { _ in
-                    isPressed = true
-                    
-                }
-                .onEnded { _ in
-                    isPressed = false
-                    action()
-                    // Trigger tap or action
-                }
-        )
-        
-        
     }
 }
 
@@ -62,8 +70,8 @@ struct RadioFieldView: View {
         self.radioField = radioField
         self.state = radioField.state
     }
-    
-    var main: some View {
+
+    var body: some View {
         VStack(spacing: 0) {
             ForEach(radioField.values) { aSelectValue in
                 let ticked = aSelectValue.value == state.stringValue(name: radioField.variable)
@@ -72,34 +80,7 @@ struct RadioFieldView: View {
                 }
             }
         }
-        .pickerStyle(.palette)
         .frame(maxWidth: .infinity)
         .styledInput(inputComponent: radioField, verticalShrink: 3.5)
-    }
-    
-    var body: some View {
-        if radioField.values.count == 1, let firstValue = radioField.values.first {
-            main
-                .contentShape(Rectangle())
-                .gesture(
-                    DragGesture(minimumDistance: 0)
-                        .onChanged { _ in
-                            isPressed = true
-                        }
-                        .onEnded { _ in
-                            isPressed = false
-                            state.strings[radioField.variable ?? ""] = firstValue.value
-                        }
-                )
-                .background {
-                    if isPressed {
-                        Color.gray.opacity(0.2)
-                    } else {
-                        EmptyView()
-                    }
-                }
-        } else {
-            main
-        }
     }
 }
