@@ -298,7 +298,7 @@ public class Registrar {
         }
         if let string = object as? String, string.hasPrefix("$"), string.hasSuffix("$"), string.count > 2 {
             let variable = string.trimmingCharacters(in: .init(charactersIn: "$"))
-            return BooleanVariable(object: ["variable": variable], registrar: self)
+            return BooleanVariable(object: ["variable": variable, "default": false], registrar: self)
         }
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as! String
@@ -335,7 +335,7 @@ public class Registrar {
         }
         if let string = object as? String, string.hasPrefix("$"), string.hasSuffix("$"), string.count > 2 {
             let variable = string.trimmingCharacters(in: .init(charactersIn: "$"))
-            return NumberVariable(object: ["variable": variable], registrar: self)
+            return NumberVariable(object: ["variable": variable, "default": 0], registrar: self)
         }
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as! String
@@ -365,7 +365,7 @@ public class Registrar {
         }
         if let string = object as? String, string.hasPrefix("$"), string.hasSuffix("$"), string.count > 2 {
             let variable = string.trimmingCharacters(in: .init(charactersIn: "$"))
-            return StringVariable(object: ["variable": variable], registrar: self)
+            return StringVariable(object: ["variable": variable, "default": ""], registrar: self)
         }
         if let constant = object as? String {
             return StringConstant(constant: constant)
