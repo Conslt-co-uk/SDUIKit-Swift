@@ -11,7 +11,7 @@ struct FlowView: View {
     var body: some View {
         ContainerView(container: flow) {
             HStack {
-                FlowLayout {
+                FlowLayout(verticalSpacing: flow.style.verticalSpacing ?? 0, horizontalSpacing: flow.style.horizontalSpacing ?? 0) {
                     ComponentsView(components: flow.components)
                 }
                 Spacer()
@@ -21,6 +21,15 @@ struct FlowView: View {
 }
 
 struct FlowLayout: Layout {
+    
+    let verticalSpacing: CGFloat
+    let horizontalSpacing: CGFloat
+    
+    init(verticalSpacing: CGFloat, horizontalSpacing: CGFloat) {
+        self.verticalSpacing = verticalSpacing
+        self.horizontalSpacing = horizontalSpacing
+    }
+    
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         var size = CGSize.zero
         var rowWidth: CGFloat = 0
@@ -29,13 +38,13 @@ struct FlowLayout: Layout {
         
         for view in subviews {
             let viewSize = view.sizeThatFits(.unspecified)
-            if rowWidth + viewSize.width > maxWidth {
-                size.height += rowHeight
+            if rowWidth + viewSize.width + horizontalSpacing > maxWidth {
+                size.height += rowHeight + verticalSpacing
                 size.width = max(size.width, rowWidth)
                 rowWidth = viewSize.width
                 rowHeight = viewSize.height
             } else {
-                rowWidth += viewSize.width
+                rowWidth += viewSize.width + horizontalSpacing
                 rowHeight = max(rowHeight, viewSize.height)
             }
         }
@@ -51,13 +60,13 @@ struct FlowLayout: Layout {
 
         for view in subviews {
             let size = view.sizeThatFits(.unspecified)
-            if x + size.width > bounds.maxX {
+            if x + size.width + horizontalSpacing > bounds.maxX {
                 x = bounds.minX
-                y += rowHeight
+                y += rowHeight + verticalSpacing
                 rowHeight = 0
             }
             view.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(width: size.width, height: size.height))
-            x += size.width
+            x += size.width + horizontalSpacing
             rowHeight = max(rowHeight, size.height)
         }
     }
