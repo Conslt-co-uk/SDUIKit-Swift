@@ -10,7 +10,7 @@ struct ComboView: View {
     
     var body: some View {
         ContainerView(container: combo) {
-            HStack(spacing: combo.style.innerMargin ?? 8) {
+            HStack(spacing: combo.style.horizontalSpacing ?? 0) {
                 ComponentsView(components: combo.components)
             }
         }

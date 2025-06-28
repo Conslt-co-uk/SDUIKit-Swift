@@ -10,10 +10,10 @@ struct ResponsiveView: View {
     
     var body: some View {
         ViewThatFits(in: .horizontal) {
-            HStack(spacing: 0) {
+            HStack(spacing: responsive.style.horizontalSpacing ?? 0) {
                 ComponentsView(components: responsive.components)
             }.frame(minWidth: responsive.responsiveWidth)
-            VStack(spacing: 0) {
+            VStack(spacing: responsive.style.verticalSpacing ?? 0) {
                 ComponentsView(components: responsive.components)
             }
         }

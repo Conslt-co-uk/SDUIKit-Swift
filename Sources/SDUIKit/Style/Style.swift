@@ -24,8 +24,10 @@ struct Style {
     let height: Double?
     let width: Double?
     let shadow: Double?
+    let verticalSpacing: Double?
+    let horizontalSpacing: Double?
     
-    init(style: String? = nil, variant: String? = nil, visibility: Bool? = nil, privacy: Bool? = nil, alignment: String? = nil, bold: Bool? = nil, italic: Bool? = nil, underlined: Bool? = nil, color: String? = nil, size: Double? = nil, font: String? = nil, innerMargin: Double? = nil, margin: Double? = nil, spaceBefore: Double? = nil, spaceAfter: Double? = nil, maxWidth: Double? = nil, borderRadius: Double? = nil, backgroundColor: String? = nil, borderColor: String? = nil, borderWidth: Double? = nil, height: Double? = nil, width: Double? = nil, shadow: Double? = nil) {
+    init(style: String? = nil, variant: String? = nil, visibility: Bool? = nil, privacy: Bool? = nil, alignment: String? = nil, bold: Bool? = nil, italic: Bool? = nil, underlined: Bool? = nil, color: String? = nil, size: Double? = nil, font: String? = nil, innerMargin: Double? = nil, margin: Double? = nil, spaceBefore: Double? = nil, spaceAfter: Double? = nil, maxWidth: Double? = nil, borderRadius: Double? = nil, backgroundColor: String? = nil, borderColor: String? = nil, borderWidth: Double? = nil, height: Double? = nil, width: Double? = nil, shadow: Double? = nil, verticalSpacing: Double? = nil, horizontalSpacing: Double? = nil) {
         self.style = style
         self.variant = variant
         self.visibility = visibility
@@ -49,6 +51,8 @@ struct Style {
         self.height = height
         self.width = width
         self.shadow = shadow
+        self.verticalSpacing = verticalSpacing
+        self.horizontalSpacing = horizontalSpacing
     }
     
     init(object: JSONObject) {
@@ -75,6 +79,8 @@ struct Style {
         height = object["height"] as? Double ?? Double(object["height"] as? Int)
         width = object["width"] as? Double ?? Double(object["width"] as? Int)
         shadow = object["shadow"] as? Double ?? Double(object["shadow"] as? Int)
+        verticalSpacing = object["verticalSpacing"] as? Double ?? Double(object["verticalSpacing"] as? Int)
+        horizontalSpacing = object["horizontalSpacing"] as? Double ?? Double(object["horizontalSpacing"] as? Int)
     }
     
     func add(style: Style) -> Style {
@@ -100,7 +106,10 @@ struct Style {
                      borderWidth: borderWidth ?? style.borderWidth,
                      height: height ?? style.height,
                      width: width ?? style.width,
-                     shadow: shadow ?? style.shadow)
+                     shadow: shadow ?? style.shadow,
+                     verticalSpacing: verticalSpacing ?? style.verticalSpacing,
+                     horizontalSpacing: horizontalSpacing ?? style.horizontalSpacing
+        )
     }
     
 }

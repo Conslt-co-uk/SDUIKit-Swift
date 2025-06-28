@@ -11,7 +11,7 @@ struct CarouselView: View {
     var body: some View {
         ContainerView(container: carousel) {
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: carousel.style.innerMargin ?? 8) {
+                HStack(spacing: carousel.style.horizontalSpacing ?? 0) {
                     ComponentsView(components: carousel.components)
                 }
             }

@@ -24,6 +24,8 @@ struct StyleExpression {
     private let heightExpression: NumberExpression
     private let widthExpression: NumberExpression
     private let shadowExpression: NumberExpression
+    private let verticalSpacingExpression: NumberExpression
+    private let horizontalSpacingExpression: NumberExpression
     
     init(object: JSONObject, registrar: Registrar, stylesheet: Stylesheet, styleName: String, prefix: String? = nil) {
         let style = stylesheet.compactedStyle(name: styleName)
@@ -50,6 +52,8 @@ struct StyleExpression {
             self.heightExpression = registrar.parseNumberExpression(object: object[prefix + "Height"]) ?? NumberConstant(constant: style?.height)
             self.widthExpression = registrar.parseNumberExpression(object: object[prefix + "Width"]) ?? NumberConstant(constant: style?.width)
             self.shadowExpression = registrar.parseNumberExpression(object: object[prefix + "Shadow"]) ?? NumberConstant(constant: style?.shadow)
+            self.verticalSpacingExpression = registrar.parseNumberExpression(object: object[prefix + "VerticalSpacing"]) ?? NumberConstant(constant: style?.verticalSpacing)
+            self.horizontalSpacingExpression = registrar.parseNumberExpression(object: object[prefix + "HorizontalSpacing"]) ?? NumberConstant(constant: style?.horizontalSpacing)
         } else {
             self.variantExpression = registrar.parseStringExpression(object: object["variant"]) ?? StringConstant(constant: style?.variant)
             self.visibilityExpression = registrar.parseBooleanExpression(object: object["visibility"]) ?? BooleanConstant(constant: style?.visibility)
@@ -73,6 +77,8 @@ struct StyleExpression {
             self.heightExpression = registrar.parseNumberExpression(object: object["height"]) ?? NumberConstant(constant: style?.height)
             self.widthExpression = registrar.parseNumberExpression(object: object["width"]) ?? NumberConstant(constant: style?.width)
             self.shadowExpression = registrar.parseNumberExpression(object: object["shadow"]) ?? NumberConstant(constant: style?.shadow)
+            self.verticalSpacingExpression = registrar.parseNumberExpression(object: object["verticalSpacing"]) ?? NumberConstant(constant: style?.verticalSpacing)
+            self.horizontalSpacingExpression = registrar.parseNumberExpression(object: object["horizontalSpacing"]) ?? NumberConstant(constant: style?.horizontalSpacing)
         }
     }
     
@@ -99,7 +105,9 @@ struct StyleExpression {
                       borderWidth: borderWidthExpression.compute(state: state),
                       height: heightExpression.compute(state: state),
                       width: widthExpression.compute(state: state),
-                      shadow: shadowExpression.compute(state: state)
+                      shadow: shadowExpression.compute(state: state),
+                      verticalSpacing: verticalSpacingExpression.compute(state: state),
+                      horizontalSpacing: horizontalSpacingExpression.compute(state: state)
                       )
     }
     
