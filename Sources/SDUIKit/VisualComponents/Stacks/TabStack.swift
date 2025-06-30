@@ -10,10 +10,10 @@ class TabStack: Stack, VisualProtocol {
     var tabBarStyle = Style(object: [:])
     let tabBarStyleExpression: StyleExpression?
     
-    required init(object: JSONObject, app: App, registrar: Registrar) {
+    required init(object: JSONObject, app: App, state: State, registrar: Registrar) {
         variableExpression = registrar.parseStringExpression(object: object["variable"])!
         tabBarStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: app.stylesheet, styleName: "navigationBar")
-        super.init(object: object, app: app, registrar: registrar)
+        super.init(object: object, app: app, state: state, registrar: registrar)
         tabs = (object["tabs"] as! [JSONObject]).map {
             TabItem(object: $0, stack: self, registrar: registrar, stylesheet: app.stylesheet)
         }

@@ -29,11 +29,11 @@ import Foundation
     
     let copyState: Bool
     
-    required init(object: JSONObject, app: App, registrar: Registrar) {
+    required init(object: JSONObject, app: App, state: State, registrar: Registrar) {
         self.app = app
         let copyState = object["copyState"] as? Bool ?? false
         self.copyState = copyState
-        let state = copyState ? app.state.copy() : app.state
+        let state = copyState ? state.copy() : state
         super.init(object: object, state: state, registrar: registrar, stylesheet: app.stylesheet)
         self.screens = registrar.parseScreens(object: object["screens"], stack: self, state: state)!
     }

@@ -150,7 +150,7 @@ public class Registrar {
         guard let object = object as? JSONObject else { return nil }
         let typeName = object["type"] as? String ?? "navigation"
         let aType = stackTypes[typeName]!
-        return aType.init(object: object, app: app, registrar: self)
+        return aType.init(object: object, app: app, state: state, registrar: self)
     }
     
     func parseStacks(object: JSONValue?, state: State, app: App) -> [Stack]? {
