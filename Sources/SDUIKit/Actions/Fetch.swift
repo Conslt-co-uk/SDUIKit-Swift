@@ -83,7 +83,7 @@ import Foundation
             screen.stack?.showOverlay(false)
              if let error = error as? ActionError {
                  if mustSucceed {
-                     await screen.showAlert(title: error.title, message: error.message)
+                     await screen.showAlert(title: error.title, message: error.message ?? "")
                      try? await Task.sleep(nanoseconds: 10_000_000)
                      try await run(screen: screen)
                      return

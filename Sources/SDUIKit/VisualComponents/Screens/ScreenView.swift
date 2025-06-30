@@ -108,6 +108,9 @@ struct ScreenView<Content: View>: View {
             isPresented: $screen.showAlert,
             presenting: screen.alertViewModel
         ) { details in
+            if let promptDefault = details.promptDefault {
+                TextField("", text: $screen.prompt)
+            }
             ForEach(details.buttons) { aButton in
                 switch aButton.role {
                 case .cancel:

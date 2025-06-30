@@ -23,8 +23,9 @@ import Combine
         let title: String
         let message: String?
         let buttons: [Button]
+        let promptDefault: String?
         
-        init(title: String?, message: String, buttons: [Button]) {
+        init(title: String?, message: String, buttons: [Button], promptDefault: String? = nil) {
             if let title = title {
                 self.title = title
                 self.message = message
@@ -33,6 +34,7 @@ import Combine
                 self.message = nil
             }
             self.buttons = buttons
+            self.promptDefault = promptDefault
         }
     }
     
@@ -51,6 +53,7 @@ import Combine
     var rightButtons: [Button]?
     var navigationBarStyle: Style = Style(object: [:])
     var hasAppeared: Bool = false
+    var prompt: String = ""
     
     let nameExpression: StringExpression?
     let titleExpression: StringExpression
@@ -131,7 +134,10 @@ import Combine
                 try await action.run(screen: self)
             }
         } catch let error {
-            await showAlert(title: error.title, message: error.message)
+            if let message = error.message {
+                await showAlert(title: error.title, message: message)
+            }
+            
         }
     }
     
@@ -140,7 +146,7 @@ import Combine
             let okButton = AlertViewModel.Button(title: "OK", role: .standard) {
                 continuation.resume()
             }
-            alertViewModel = .init(title: "Alert", message: message, buttons: [okButton])
+            alertViewModel = .init(title: title, message: message, buttons: [okButton])
         }
     }
     
@@ -152,9 +158,29 @@ import Combine
             let okButton = AlertViewModel.Button(title: "OK", role: .standard) {
                 continuation.resume(returning: true)
             }
-            alertViewModel = .init(title: "Alert", message: message, buttons: [cancelButton, okButton])
+            alertViewModel = .init(title: title, message: message, buttons: [cancelButton, okButton])
         }
     }
+    
+    func showPrompt(title: String?, message: String, initialValue: String) async -> String? {
+        prompt = initialValue
+        let result = await withCheckedContinuation { continuation in
+            let cancelButton = AlertViewModel.Button(title: "Cancel", role: .cancel) {
+                continuation.resume(returning: false)
+            }
+            let okButton = AlertViewModel.Button(title: "OK", role: .standard) {
+                continuation.resume(returning: true)
+            }
+            alertViewModel = .init(title: title, message: message, buttons: [cancelButton, okButton], promptDefault: prompt)
+        }
+        if result {
+            return prompt
+        } else {
+            return nil
+        }
+    }
+    
+    
     
     func onAppear() {
         if url != nil { activity.becomeCurrent() }

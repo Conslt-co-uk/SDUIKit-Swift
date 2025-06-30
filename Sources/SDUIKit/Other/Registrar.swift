@@ -48,6 +48,7 @@ public class Registrar {
         
         actionTypes["alert"] = Alert.self
         actionTypes["confirm"] = Confirm.self
+        actionTypes["prompt"] = Prompt.self
         actionTypes["if"] = IfAction.self
         actionTypes["copy"] = Copy.self
         actionTypes["updateBoolean"] = UpdateBoolean.self
