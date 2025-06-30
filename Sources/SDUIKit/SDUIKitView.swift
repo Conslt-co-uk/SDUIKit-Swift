@@ -8,10 +8,11 @@
 import SwiftUI
 
 public struct SDUIKitView: View {
+    
     @SwiftUI.State var root: Root
     
-    public init(json: Any, callback: (([String: Any]) -> ())? = nil) {
-        self.root = Root(json: json as! JSONObject, callback: callback)
+    public init(root: Root) {
+        self.root = root
     }
     
     public var body: some View {

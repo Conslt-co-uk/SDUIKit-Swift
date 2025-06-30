@@ -50,6 +50,7 @@ import Combine
     var leftButtons: [Button]?
     var rightButtons: [Button]?
     var navigationBarStyle: Style = Style(object: [:])
+    var hasAppeared: Bool = false
     
     let nameExpression: StringExpression?
     let titleExpression: StringExpression
@@ -157,6 +158,14 @@ import Combine
     
     func onAppear() {
         if url != nil { activity.becomeCurrent() }
+        if !hasAppeared {
+            hasAppeared = true
+            if let actions = actions {
+                Task {
+                    await run(actions: actions)
+                }
+            }
+        }
     }
     
     func onDisappear() {

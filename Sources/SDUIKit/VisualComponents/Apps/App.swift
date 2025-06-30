@@ -9,6 +9,7 @@ import SwiftUI
     required init(object: JSONObject, registrar: Registrar) {
         let state = State(object: object["state"] as? JSONObject)
         let stylesheet = Stylesheet(object: object)
+        registrar.updateComponents(stylesheet.components)
         super.init(object: object, state: state, registrar: registrar, stylesheet: stylesheet)
         var stacks = registrar.parseStacks(object: object["stacks"], state: state, app: self) ?? []
         rootStack = stacks.removeFirst()
@@ -18,7 +19,6 @@ import SwiftUI
             stack.presentedStack = newStack
             stack = newStack
         }
-    
     }
     
     func present(stack: Stack) {

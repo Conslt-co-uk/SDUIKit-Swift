@@ -14,7 +14,7 @@ struct Stylesheet {
         } ?? [:]
         colors = object?["colors"] as? [String: String] ?? [:]
         images = (object?["images"] as? [String: String] ?? [:]).compactMapValues { URL(string: $0) }
-        components = object?["library"] as? [String: JSONObject] ?? [:]
+        components = object?["library"] as? [String: JSONValue] ?? [:]
     }
     
     func color(name: String?) -> String? {

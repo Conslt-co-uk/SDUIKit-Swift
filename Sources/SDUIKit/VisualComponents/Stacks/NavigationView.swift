@@ -15,12 +15,14 @@ struct NavigationView: View {
     
     var stack: some View {
         NavigationStack(path: $navigation.path) {
-            VisualComponentView(navigation.screens.first!)
-                .navigationDestination(for: Int.self) { index in
-                    if navigation.screens.count > index {
-                        VisualComponentView(navigation.screens[index])
+            if let first = navigation.screens.first {
+                VisualComponentView(first)
+                    .navigationDestination(for: Int.self) { index in
+                        if navigation.screens.count > index {
+                            VisualComponentView(navigation.screens[index])
+                        }
                     }
-                }
+            }
         }
     }
     
@@ -35,6 +37,4 @@ struct NavigationView: View {
             }
         }
     }
-    
-
 }

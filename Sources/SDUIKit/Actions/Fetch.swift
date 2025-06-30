@@ -9,7 +9,10 @@ import Foundation
     let numberExpresions: [String: NumberExpression]?
     let stringExpressions: [String: StringExpression]?
     let errorTitleExpression: StringExpression?
+    let mustSucceedExpression: BooleanExpression?
+    
     let registrar: Registrar
+    
     
     required init(object: JSONObject, registrar: Registrar) {
         self.registrar = registrar
@@ -20,12 +23,12 @@ import Foundation
         numberExpresions = (object["numbers"] as? [String: JSONValue])?.mapValues { registrar.parseNumberExpression(object: $0)! }
         stringExpressions = (object["strings"] as? [String: JSONValue])?.mapValues { registrar.parseStringExpression(object: $0)! }
         errorTitleExpression = registrar.parseStringExpression(object: object["errorTitle"])
+        mustSucceedExpression = registrar.parseBooleanExpression(object: object["mustSucceed"])
     }
     
     func run(screen: Screen) async throws(ActionError) {
         guard let session = screen.stack?.app?.root?.urlSession else { return }
         screen.stack?.showOverlay(true)
-        defer { screen.stack?.showOverlay(false) }
         let method = methodExpression?.compute(state: screen.state)
         let urlString = urlExpression.compute(state: screen.state)!
         let headers = headerExpressions?.mapValues { $0.compute(state: screen.state) }
@@ -33,6 +36,7 @@ import Foundation
         let numbers = numberExpresions?.mapValues { $0.compute(state: screen.state) }
         let strings = stringExpressions?.mapValues { $0.compute(state: screen.state) }
         let errorTitle = errorTitleExpression?.compute(state: screen.state)
+        let mustSucceed = mustSucceedExpression?.compute(state: screen.state) ?? false
    
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = method ?? "GET"
@@ -67,17 +71,36 @@ import Foundation
                 throw ActionError(title: errorTitle, message: HTTPURLResponse.localizedString(forStatusCode: statusCode))
             }
             let json = try JSONDecoder().decode(AnyDecodable.self, from: data).value
+            screen.stack?.showOverlay(false)
+            try? await Task.sleep(nanoseconds: 1_000)
             if let actions = registrar.parseActions(object: (json as? JSONObject)?["actions"]) {
                 for action in actions {
                     try await action.run(screen: screen)
                 }
             }
         }
-        catch let error as ActionError {
-            throw error
-        }
         catch {
-            throw .init(title: errorTitle, message: error.localizedDescription)
+            screen.stack?.showOverlay(false)
+             if let error = error as? ActionError {
+                 if mustSucceed {
+                     await screen.showAlert(title: error.title, message: error.message)
+                     try? await Task.sleep(nanoseconds: 10_000_000)
+                     try await run(screen: screen)
+                     return
+                 } else {
+                     throw error
+                 }
+            } else {
+                if mustSucceed {
+                    await screen.showAlert(title: errorTitle, message: error.localizedDescription)
+                    try? await Task.sleep(nanoseconds: 10_000_000)
+                    try await run(screen: screen)
+                    return
+                } else {
+                    throw ActionError(title: errorTitle, message: error.localizedDescription)
+                }
+                
+            }
         }
     }
     
