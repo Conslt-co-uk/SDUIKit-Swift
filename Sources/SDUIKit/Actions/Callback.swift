@@ -27,7 +27,11 @@ import Foundation
         for (key, value) in strings ?? [:] {
             json[key] = value
         }
-        screen.stack?.app?.root?.callback?(json)
+        let callcack: [String: Any] = [
+            "type": "callback",
+            "parameters": json
+        ]
+        screen.stack?.app?.root?.callback?(callcack)
     }
     
 }
