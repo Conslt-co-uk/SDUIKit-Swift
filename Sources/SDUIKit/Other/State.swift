@@ -117,7 +117,7 @@ public final class State: ObservableObject {
     
     
     func copy() -> State {
-        return State() // XXXX
+        return State(strings: strings, numbers: numbers, booleans: booleans)
     }
 
 }
