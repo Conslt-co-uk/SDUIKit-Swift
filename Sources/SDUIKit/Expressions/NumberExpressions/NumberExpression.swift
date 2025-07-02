@@ -1,8 +1,8 @@
 import Foundation
 
-class NumberExpression: Expression {
+open class NumberExpression: Expression {
     
-    func compute(state: State) -> Double? {
+    public func compute(state: State) -> Double? {
         return nil
     }
     

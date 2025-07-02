@@ -2,10 +2,10 @@ import Foundation
 import SwiftUI
 import Combine
 
-@MainActor @Observable public class VisualComponent: Identifiable{
+@MainActor @Observable open class VisualComponent: Identifiable {
     
     public let id: UUID = UUID()
-    let state: State
+    public let state: State
 
     var style: Style = Style(object: [:])
     var currentFontSizeMultiplier: CGFloat = 1
@@ -57,7 +57,7 @@ import Combine
         #endif
     }
     
-    func updateVariables() {
+    open func updateVariables() {
         style = styleExpression.style(state: state, stylesheet: stylesheet)
     }
     

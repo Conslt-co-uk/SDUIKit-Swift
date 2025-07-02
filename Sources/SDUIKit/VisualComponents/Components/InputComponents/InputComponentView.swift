@@ -118,7 +118,7 @@ struct InputComponentViewModifier: ViewModifier {
     }
 }
 
-extension View {
+public extension View {
     func styledInput(inputComponent: InputComponent, verticalShrink: Double = 0) -> some View {
         self.modifier(InputComponentViewModifier(title: inputComponent.title,
                                                  errorMessage: inputComponent.errorMessage ?? "\u{00A0}",

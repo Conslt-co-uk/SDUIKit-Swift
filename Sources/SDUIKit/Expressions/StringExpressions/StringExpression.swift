@@ -1,9 +1,9 @@
 import Foundation
 
 
-class StringExpression: Expression {
+open class StringExpression: Expression {
     
-    func compute(state: State) -> String? {
+    public func compute(state: State) -> String? {
         return nil
     }
     

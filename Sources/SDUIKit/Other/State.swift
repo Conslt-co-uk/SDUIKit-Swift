@@ -62,7 +62,8 @@ public final class State: ObservableObject {
     
     func booleanValue(name: String?) -> Bool? { booleans[name ?? ""] ?? nil }
 
-    func stringBinding(name: String) -> Binding<String?> {
+    @MainActor
+    public func stringBinding(name: String) -> Binding<String?> {
         return Binding {  [self] in
             return strings[name] ?? nil
         } set: { [self] value in
@@ -71,7 +72,7 @@ public final class State: ObservableObject {
     }
     
     @MainActor
-    func numberBinding(name: String) -> Binding<Double?> {
+    public func numberBinding(name: String) -> Binding<Double?> {
         return Binding {  [self] in
             return numbers[name] ?? nil
         } set: { [self] value in
@@ -80,7 +81,7 @@ public final class State: ObservableObject {
     }
     
     @MainActor
-    func booleanBinding(name: String) -> Binding<Bool?> {
+    public func booleanBinding(name: String) -> Binding<Bool?> {
         return Binding {  [self] in
             return booleans[name] ?? nil
         } set: { [self] value in
@@ -89,7 +90,7 @@ public final class State: ObservableObject {
     }
     
     @MainActor
-    func dateBinding(name: String) -> Binding<Date?> {
+    public func dateBinding(name: String) -> Binding<Date?> {
         return Binding<Date?> {
             if let result = self.strings[name], let string = result {
                 return Date(ISO8601dateString: string)
@@ -102,7 +103,7 @@ public final class State: ObservableObject {
     }
     
     @MainActor
-    func timeBinding(name: String) -> Binding<Date?> {
+    public func timeBinding(name: String) -> Binding<Date?> {
         return Binding<Date?> {
             if let result = self.strings[name], let string = result {
                 return Date(ISO8601timeString: string)

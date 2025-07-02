@@ -1,8 +1,8 @@
 import Foundation
 
-@MainActor @Observable public class InputComponent: Component {
+@MainActor @Observable open class InputComponent: Component {
     
-    @ObservationIgnored var variable: String?
+    @ObservationIgnored public var variable: String?
     var title: String?
     var titleStyle: Style = Style(object: [:])
     var errorStyle: Style = Style(object: [:])
@@ -19,7 +19,7 @@ import Foundation
     private let errorStyleExpression: StyleExpression
     private let validationExpressions: [BooleanExpression]?
     
-    required init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
+    required public init(object: JSONObject, screen: Screen, registrar: Registrar, typeName: String? = nil) {
         variableExpression = registrar.parseStringExpression(object: object["variable"] ?? "")!
         titleExpression = registrar.parseStringExpression(object: object["title"] ?? "")!
         titleStyleExpression = StyleExpression(object: object, registrar: registrar, stylesheet: screen.stack!.app!.stylesheet, styleName: "inputTitle", prefix: "title")
@@ -28,7 +28,7 @@ import Foundation
         super.init(object: object, screen: screen, registrar: registrar, typeName: typeName ?? "field")
     }
     
-    override func updateVariables() {
+    override open func updateVariables() {
         super.updateVariables()
         variable = variableExpression.compute(state: state)
         title = titleExpression.compute(state: state)

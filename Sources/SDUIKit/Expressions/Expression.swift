@@ -2,9 +2,9 @@ import Foundation
 import Combine
 
 @MainActor
-class Expression: ObservableObject {
+open class Expression: ObservableObject {
     
-    required init (object: JSONObject, registrar: Registrar) {
+    required public init (object: JSONObject, registrar: Registrar) {
     }
     
 }

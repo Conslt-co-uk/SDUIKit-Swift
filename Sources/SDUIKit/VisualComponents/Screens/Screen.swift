@@ -95,7 +95,7 @@ import Combine
         components = registrar.parseComponents(object: object["components"], screen: self)!
     }
     
-    override func updateVariables() {
+    public override func updateVariables() {
         title = titleExpression.compute(state: state)
         if let urlString = urlExpression?.compute(state: state), !urlString.isEmpty {
             url = URL(string: urlString)
