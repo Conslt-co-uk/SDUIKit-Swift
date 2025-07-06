@@ -41,6 +41,10 @@ import Foundation
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = method ?? "GET"
         
+        if method == "POST" {
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+        
         if let headers = headers {
             for (key, value) in headers {
                 if let value {
@@ -48,6 +52,7 @@ import Foundation
                 }
             }
         }
+
         
         if booleans != nil || numbers != nil || strings != nil {
             var json: [String: Any] = [:]

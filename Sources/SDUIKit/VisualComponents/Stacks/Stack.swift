@@ -35,7 +35,7 @@ import Foundation
         self.copyState = copyState
         let state = copyState ? state.copy() : state
         super.init(object: object, state: state, registrar: registrar, stylesheet: app.stylesheet)
-        self.screens = registrar.parseScreens(object: object["screens"], stack: self, state: state)!
+        self.screens = registrar.parseScreens(object: object["screens"], stack: self, state: state) ?? []
     }
     
     func push(screen: Screen) {
