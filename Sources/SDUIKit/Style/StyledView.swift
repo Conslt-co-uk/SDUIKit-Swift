@@ -18,6 +18,9 @@ struct StyledModifier: ViewModifier {
                     .clipShape(RoundedRectangle(cornerRadius: style.borderRadius ?? 0))
             }
             .clipShape(RoundedRectangle(cornerRadius: style.borderRadius ?? 0))
+            .if(style.shadow != nil) {
+                $0.shadow(radius: style.shadow!)
+            }
     }
 }
 
