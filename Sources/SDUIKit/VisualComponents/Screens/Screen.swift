@@ -183,7 +183,11 @@ import Combine
     
     
     func onAppear() {
-        if url != nil { activity.becomeCurrent() }
+        if let url {
+            activity.becomeCurrent()
+            UserDefaults.standard.set(url.absoluteURL, forKey: "app_startURL")
+            UserDefaults.standard.synchronize()
+        }
         if !hasAppeared {
             hasAppeared = true
             if let actions = actions {

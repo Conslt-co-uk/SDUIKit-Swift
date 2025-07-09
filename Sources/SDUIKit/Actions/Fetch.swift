@@ -75,6 +75,8 @@ import Foundation
             guard statusCode == 200 || statusCode == 201  else {
                 throw ActionError(title: errorTitle, message: HTTPURLResponse.localizedString(forStatusCode: statusCode))
             }
+            let string = String(data: data, encoding: .utf8)!
+            print(string)
             let json = try JSONDecoder().decode(AnyDecodable.self, from: data).value
             screen.stack?.showOverlay(false)
             try? await Task.sleep(nanoseconds: 1_000)

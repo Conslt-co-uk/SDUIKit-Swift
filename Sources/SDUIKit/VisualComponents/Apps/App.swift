@@ -8,6 +8,10 @@ import SwiftUI
     
     required init(object: JSONObject, registrar: Registrar) {
         let state = State(object: object["state"] as? JSONObject)
+        let startURLString = UserDefaults.standard.url(forKey: "app_startURL")
+        if let startURLString = startURLString?.absoluteString {
+            state.strings["app.startURL"] = startURLString
+        }
         let stylesheet = Stylesheet(object: object)
         registrar.updateComponents(stylesheet.components)
         super.init(object: object, state: state, registrar: registrar, stylesheet: stylesheet)
