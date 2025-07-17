@@ -75,6 +75,7 @@ import Foundation
             guard statusCode == 200 || statusCode == 201  else {
                 throw ActionError(title: errorTitle, message: HTTPURLResponse.localizedString(forStatusCode: statusCode))
             }
+            dump(response)
             let string = String(data: data, encoding: .utf8)!
             print(string)
             let json = try JSONDecoder().decode(AnyDecodable.self, from: data).value
@@ -106,7 +107,6 @@ import Foundation
                 } else {
                     throw ActionError(title: errorTitle, message: error.localizedDescription)
                 }
-                
             }
         }
     }

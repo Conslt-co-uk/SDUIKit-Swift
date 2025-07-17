@@ -12,8 +12,9 @@ struct TabStackView: View {
     }
     
     var body: some View {
+        let binding = state.stringBinding(name: tabStack.variable)
         StackView(stack: tabStack) {
-            SwiftUI.TabView(selection: state.stringBinding(name: tabStack.variable)) {
+            SwiftUI.TabView(selection: binding) {
                 ForEach(tabStack.tabs) { aTab in
                     VisualComponentView(aTab)
                         .if( aTab.stylesheet.color(name: "accent") != nil ) {
@@ -33,6 +34,9 @@ struct TabStackView: View {
                 $0.accentColor(Color(sduiName: tabStack.tabBarStyle.color, darkMode: colorScheme == .dark))
             }
 
+        }
+        .onChange(of: binding.wrappedValue) { oldValue, newValue in
+            tabStack.tabHasChanged()
         }
     }
 }

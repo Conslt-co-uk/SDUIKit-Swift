@@ -31,6 +31,7 @@ import SwiftUI
             aStack = presentedStack
         }
         aStack.presentedStack = stack
+        updateURL()
     }
     
     func close() {
@@ -41,6 +42,7 @@ import SwiftUI
             secondStack = presentedStack
         }
         firstStack?.presentedStack = nil
+        updateURL()
     }
     
     func replaceScreen(screenObject: JSONObject, registrar: Registrar) {
@@ -50,6 +52,7 @@ import SwiftUI
             aStack = presentedStack
         }
         aStack.replaceScreen(screenObject: screenObject, registrar: registrar)
+        updateURL()
     }
     
     func state(name: String) -> State? {
@@ -69,5 +72,12 @@ import SwiftUI
             stack = stack?.presentedStack
         }
         return stack
+    }
+    
+    func updateURL() {
+        if let urlString = topStack?.topScreen?.state.stringValue(name: "app.startURL") as? String {
+            UserDefaults.standard.set(urlString, forKey: "app_startURL")
+            UserDefaults.standard.synchronize()
+        }
     }
 }

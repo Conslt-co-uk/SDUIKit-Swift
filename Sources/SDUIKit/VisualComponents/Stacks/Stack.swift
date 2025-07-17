@@ -41,13 +41,18 @@ import Foundation
     func push(screen: Screen) {
         print("push")
         screens.append(screen)
+        app?.updateURL()
     }
     
-    func back() {
-        print("back")
-        if screens.count > 1 {
+    func back(name: String?) {
+        if let name {
+            while screens.count > 1 && screens.last!.name != name {
+                screens.removeLast()
+            }
+        } else if screens.count > 1 {
             screens.removeLast()
         }
+        app?.updateURL()
     }
     
     func replaceScreen(screenObject: JSONObject, registrar: Registrar) {
@@ -58,6 +63,7 @@ import Foundation
                 return aScreen
             }
         }
+        app?.updateURL()
     }
     
     func state(name: String) -> State? {

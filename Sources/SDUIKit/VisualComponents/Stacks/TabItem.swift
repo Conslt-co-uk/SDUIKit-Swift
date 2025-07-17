@@ -59,8 +59,12 @@ class TabItem: VisualComponent, VisualProtocol {
         screens.append(screen)
     }
     
-    func back() {
-        if screens.count > 1 {
+    func back(name: String?) {
+        if let name = name {
+            while screens.count > 1 && screens.last!.name != name {
+                screens.removeLast()
+            }
+        } else if screens.count > 1 {
             screens.removeLast()
         }
     }
