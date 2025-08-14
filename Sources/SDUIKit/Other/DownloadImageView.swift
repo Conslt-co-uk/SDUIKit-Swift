@@ -49,7 +49,7 @@ struct DownloadImageView: View  {
             if let scheme = url.scheme, scheme == "data" {
                 decodeDataURL(url: url)
             } else {
-                Task {
+                Task.detached {
                     await fetch(url: url)
                 }
             }

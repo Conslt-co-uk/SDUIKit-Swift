@@ -4,6 +4,7 @@ import SwiftUI
 @MainActor @Observable class Responsive: Container, VisualProtocol {
     
     var responsiveWidth: Double = 360
+    var vertical = false
     
     let responsiveWidthExpression: NumberExpression?
     
@@ -15,6 +16,7 @@ import SwiftUI
     override func updateVariables() {
         super.updateVariables()
         responsiveWidth = responsiveWidthExpression?.compute(state: state) ?? 360
+        vertical = screen.stack?.app?.size?.width ?? 0 < responsiveWidth
     }
     
     @ViewBuilder

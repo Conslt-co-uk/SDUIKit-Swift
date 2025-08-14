@@ -9,12 +9,17 @@ struct ResponsiveView: View {
     }
     
     var body: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(spacing: responsive.style.horizontalSpacing ?? 0) {
-                ComponentsView(components: responsive.components)
-            }.frame(minWidth: responsive.responsiveWidth)
-            VStack(spacing: responsive.style.verticalSpacing ?? 0) {
-                ComponentsView(components: responsive.components)
+        ContainerView(container: responsive) {
+            if responsive.vertical {
+                VStack(spacing: responsive.style.verticalSpacing ?? 0) {
+                    ComponentsView(components: responsive.components)
+                }
+                
+            } else {
+                HStack(spacing: responsive.style.horizontalSpacing ?? 0) {
+                    ComponentsView(components: responsive.components)
+                }.frame(minWidth: responsive.responsiveWidth)
+
             }
         }
     }

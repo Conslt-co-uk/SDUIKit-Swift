@@ -5,6 +5,11 @@ import SwiftUI
     
     var rootStack: Stack!
     weak var root: Root? = nil
+    var size: CGSize? {
+        didSet {
+            NotificationCenter.default.post(name: NSNotification.Name("App.sizeDidChange"), object: self)
+        }
+    }
     
     required init(object: JSONObject, registrar: Registrar) {
         let state = State(object: object["state"] as? JSONObject)

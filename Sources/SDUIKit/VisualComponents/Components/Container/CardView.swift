@@ -11,7 +11,7 @@ struct CardView: View {
     var body: some View {
         ContainerView(container: card) {
             VStack(spacing: card.style.verticalSpacing ?? 0) {
-                ComponentsView(components: card.components)
+                ComponentsView(components: card.components, addSpacer: card.style.height != nil)
             }
         }
     }

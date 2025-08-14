@@ -19,9 +19,16 @@ struct ClassicAppView: View {
     
     var body: some View {
         let accent = app.stylesheet.colors["accent"]
-        VisualComponentView(app.rootStack)
-            .if(accent != nil) {
-                $0.accentColor(Color(hex: accent!, darkMode: colorScheme == .dark))
-            }
+        GeometryReader { geometry in
+            let _ = { app.size = geometry.size }()
+            VisualComponentView(app.rootStack)
+                .if(accent != nil) {
+                    $0.accentColor(Color(hex: accent!, darkMode: colorScheme == .dark))
+                }
+                .onChange(of: geometry.size) { _, newSize in
+                    app.size = newSize
+                }
+        }
+        
     }
 }

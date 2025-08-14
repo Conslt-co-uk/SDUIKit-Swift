@@ -4,7 +4,7 @@ class StringDefault: StringExpression {
     let defaultExpression: StringExpression
     
     required init(object: JSONObject, registrar: Registrar) {
-        stringExpressions = registrar.parseStringExpressions(object: object["Strings"])!
+        stringExpressions = registrar.parseStringExpressions(object: object["strings"])!
         defaultExpression = registrar.parseStringExpression(object: object["default"])!
         super.init(object: object, registrar: registrar)
     }

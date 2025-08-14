@@ -28,7 +28,7 @@ struct TabItemView: View {
         }
         .tabItem {
             Label {
-                Text(tab.name)
+                Text(tab.title)
             } icon: {
                 Image(uiImage: imageFromDataURL(tab.image.imageURL!))
             }

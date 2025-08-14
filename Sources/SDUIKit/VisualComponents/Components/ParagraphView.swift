@@ -47,6 +47,7 @@ struct ParagraphView: View {
             }
         }
         .multilineTextAlignment(textAlignment)
+        .lineLimit(nil)
         .frame(maxWidth: .infinity, alignment: alignment)
         .styledMargin(paragraph.style)
         .environment(\.openURL, OpenURLAction(handler: { url in

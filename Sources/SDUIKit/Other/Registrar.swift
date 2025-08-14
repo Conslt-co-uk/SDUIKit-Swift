@@ -122,6 +122,7 @@ public class Registrar {
         stringExpressionTypes["trim"] = Trim.self
         stringExpressionTypes["formatDate"] = FormatDate.self
         stringExpressionTypes["formatNumber"] = FormatNumber.self
+        stringExpressionTypes["urlEncode"] = URLEncode.self
     }
     
     public func register<T: App>(_ type: T.Type, forName name: String) {

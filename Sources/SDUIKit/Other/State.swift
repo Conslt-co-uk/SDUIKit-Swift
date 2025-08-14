@@ -16,7 +16,17 @@ public final class State: ObservableObject {
         self.strings["app.timezone"] = TimeZone.current.identifier
         self.numbers["app.timeoffset"] = Double(TimeZone.current.secondsFromGMT(for: Date())) / 60
         self.booleans["app.darkmode"] = UITraitCollection.current.userInterfaceStyle == .dark
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("App.sizeDidChange"), object: nil, queue: nil) { [weak self] notification in
+            guard let app = notification.object as? App else { return }
+            Task {
+                let width = await app.size?.width ?? 0
+                await self?.setNumberValue(width, name: "app.width")
+            }
+        }
+        
     }
+    
     
     public init(strings: [String : String?] = [:], numbers: [String : Double?] = [:], booleans: [String : Bool?] = [:]) {
         self.strings = strings
@@ -59,6 +69,10 @@ public final class State: ObservableObject {
     func stringValue(name: String?) -> String? { strings[name ?? ""] ?? nil }
     
     func numberValue(name: String?) -> Double? { numbers[name ?? ""] ?? nil }
+    
+    func setNumberValue(_ value: Double?, name: String?) {
+        numbers[name ?? ""] = value
+    }
     
     func booleanValue(name: String?) -> Bool? { booleans[name ?? ""] ?? nil }
 
@@ -120,4 +134,7 @@ public final class State: ObservableObject {
         return State(strings: strings, numbers: numbers, booleans: booleans)
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
